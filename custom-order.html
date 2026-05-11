@@ -1,271 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Custom Order — ArtCraft Studio</title>
+  <title>Custom Order — ArtCraft</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
-    .order-layout {
-      display: grid;
-      grid-template-columns: 1fr 420px;
-      gap: 3rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 3rem 5%;
-    }
-
+    .order-layout { display:grid; grid-template-columns:1fr 420px; gap:3rem; max-width:1200px; margin:0 auto; padding:3rem 5%; }
     .upload-zone {
-      border: 2px dashed var(--border);
-      border-radius: var(--radius);
-      background: var(--bg2);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 240px;
-      cursor: pointer;
-      transition: border-color 0.3s ease, background 0.3s ease;
-      position: relative;
-      overflow: hidden;
+      border:2px dashed var(--border);
+      border-radius:var(--radius);
+      background:var(--bg2);
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      min-height:240px; cursor:pointer;
+      transition:border-color 0.3s ease, background 0.3s ease;
+      position:relative; overflow:hidden;
     }
-
-    .upload-zone:hover,
-    .upload-zone.dragover {
-      border-color: var(--gold);
-      background: rgba(201, 169, 110, 0.04);
-    }
-
-    .upload-zone input {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      cursor: pointer;
-    }
-
-    #upload-preview {
-      width: 100%;
-      height: 100%;
-      min-height: 240px;
-    }
-
-    .upload-placeholder {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 2rem;
-      text-align: center;
-    }
-
-    .upload-icon {
-      width: 64px;
-      height: 64px;
-      background: rgba(201, 169, 110, 0.1);
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      color: var(--gold);
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.25rem;
-    }
-
-    .form-grid .full {
-      grid-column: 1/-1;
-    }
-
-    .preview-panel {
-      position: sticky;
-      top: calc(var(--nav-h) + 1.5rem);
-      height: max-content;
-    }
-
-    .preview-card {
-      background: var(--bg2);
-      border: 1px solid var(--border2);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-
-    .preview-card-img {
-      width: 100%;
-      aspect-ratio: 4/5;
-      object-fit: cover;
-      background: var(--bg3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .price-breakdown {
-      padding: 1.25rem;
-    }
-
-    .price-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      color: var(--text2);
-      padding: 0.4rem 0;
-      border-bottom: 1px solid var(--border2);
-    }
-
-    .price-row.total {
-      color: var(--gold);
-      font-weight: 600;
-      font-size: 1rem;
-      border-bottom: none;
-      padding-top: 0.75rem;
-    }
-
-    .step-indicator {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      margin-bottom: 2.5rem;
-    }
-
-    .si-step {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .si-num {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.78rem;
-      color: var(--text2);
-      transition: all 0.3s;
-      flex-shrink: 0;
-    }
-
-    .si-step.active .si-num {
-      background: var(--gold);
-      border-color: var(--gold);
-      color: var(--bg);
-      font-weight: 700;
-    }
-
-    .si-label {
-      font-size: 0.78rem;
-      color: var(--text2);
-    }
-
-    .si-step.active .si-label {
-      color: var(--cream);
-    }
-
-    .si-line {
-      flex: 1;
-      height: 1px;
-      background: var(--border2);
-      min-width: 24px;
-    }
-
-    @media(max-width:900px) {
-      .order-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .preview-panel {
-        position: static;
-      }
-
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    .upload-zone:hover, .upload-zone.dragover { border-color:var(--gold); background:rgba(201,169,110,0.04); }
+    .upload-zone input { position:absolute; inset:0; opacity:0; cursor:pointer; }
+    #upload-preview { width:100%; height:100%; min-height:240px; }
+    .upload-placeholder { display:flex; flex-direction:column; align-items:center; gap:0.75rem; padding:2rem; text-align:center; }
+    .upload-icon { width:64px; height:64px; background:rgba(201,169,110,0.1); border:1px solid var(--border); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; color:var(--gold); }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; }
+    .form-grid .full { grid-column:1/-1; }
+    .preview-panel { position:sticky; top:calc(var(--nav-h) + 1.5rem); height:max-content; }
+    .preview-card { background:var(--bg2); border:1px solid var(--border2); border-radius:var(--radius); overflow:hidden; }
+    .preview-card-img { width:100%; aspect-ratio:4/5; object-fit:cover; background:var(--bg3); display:flex; align-items:center; justify-content:center; }
+    .price-breakdown { padding:1.25rem; }
+    .price-row { display:flex; justify-content:space-between; font-size:0.85rem; color:var(--text2); padding:0.4rem 0; border-bottom:1px solid var(--border2); }
+    .price-row.total { color:var(--gold); font-weight:600; font-size:1rem; border-bottom:none; padding-top:0.75rem; }
+    .step-indicator { display:flex; align-items:center; gap:0; margin-bottom:2.5rem; }
+    .si-step { display:flex; align-items:center; gap:0.6rem; }
+    .si-num { width:32px; height:32px; border-radius:50%; background:var(--bg3); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:0.78rem; color:var(--text2); transition:all 0.3s; flex-shrink:0; }
+    .si-step.active .si-num { background:var(--gold); border-color:var(--gold); color:var(--bg); font-weight:700; }
+    .si-label { font-size:0.78rem; color:var(--text2); }
+    .si-step.active .si-label { color:var(--cream); }
+    .si-line { flex:1; height:1px; background:var(--border2); min-width:24px; }
+    @media(max-width:900px){ .order-layout{grid-template-columns:1fr;} .preview-panel{position:static;} .form-grid{grid-template-columns:1fr;} }
   </style>
 </head>
-
 <body>
-  <div id="loading-screen">
-    <div class="loading-logo">ArtCraft</div>
-    <div class="loading-bar">
-      <div class="loading-bar-inner"></div>
-    </div>
-  </div>
-  <div class="cursor-dot"></div>
-  <div class="cursor-ring"></div>
+  <div id="loading-screen"><div class="loading-logo">ArtCraft</div><div class="loading-bar"><div class="loading-bar-inner"></div></div></div>
+  <div class="cursor-dot"></div><div class="cursor-ring"></div>
   <div id="scroll-bar"></div>
 
   <nav class="navbar scrolled">
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo">ArtCraft <span>Studio</span></a>
+      <a href="index.html" class="nav-logo">ArtCraft</a>
       <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="shop.html">Shop</a></li>
-        <li><a href="custom-order.html">Custom Order</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a href="index.html">Home</a></li><li><a href="shop.html">Shop</a></li>
+        <li><a href="custom-order.html">Custom Order</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li>
       </ul>
       <div class="nav-actions">
-        <a href="wishlist.html" class="nav-icon-btn"><i class="fas fa-heart"></i><span
-            class="cart-count wish-count"></span></a>
+        <a href="wishlist.html" class="nav-icon-btn"><i class="fas fa-heart"></i><span class="cart-count wish-count"></span></a>
         <a href="cart.html" class="nav-icon-btn"><i class="fas fa-shopping-bag"></i><span class="cart-count"></span></a>
-        <a href="auth.html" class="nav-icon-btn"><i class="fas fa-user"></i></a>
+        <div class="user-nav-btn"></div>
         <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
       </div>
     </div>
   </nav>
   <div class="mobile-nav" id="mobile-nav">
     <a href="index.html">Home</a><a href="shop.html">Shop</a><a href="custom-order.html">Custom Order</a>
-    <a href="about.html">About</a><a href="contact.html">Contact</a><a href="cart.html">Cart</a>
+    <a href="about.html">About</a><a href="contact.html">Contact</a><a href="auth.html">My Account</a>
   </div>
 
   <div class="page-header">
     <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Custom Order</span></div>
     <h1 class="section-title">Your Art, <em>Your Story</em></h1>
-    <p style="color:var(--text2);font-size:0.9rem;margin-top:0.5rem">Fill in the details below and we'll create your
-      masterpiece</p>
+    <p style="color:var(--text2);font-size:0.9rem;margin-top:0.5rem">Fill in the details below and we'll create your masterpiece</p>
   </div>
 
   <div class="order-layout">
     <div>
       <div class="step-indicator">
-        <div class="si-step active">
-          <div class="si-num">1</div><span class="si-label">Upload & Details</span>
-        </div>
+        <div class="si-step active"><div class="si-num">1</div><span class="si-label">Upload & Details</span></div>
         <div class="si-line"></div>
-        <div class="si-step">
-          <div class="si-num">2</div><span class="si-label">Review</span>
-        </div>
+        <div class="si-step"><div class="si-num">2</div><span class="si-label">Review</span></div>
         <div class="si-line"></div>
-        <div class="si-step">
-          <div class="si-num">3</div><span class="si-label">Payment</span>
-        </div>
+        <div class="si-step"><div class="si-num">3</div><span class="si-label">Payment</span></div>
       </div>
 
       <form id="custom-order-form">
         <!-- Upload Photo -->
         <div style="margin-bottom:2rem">
-          <label class="form-label" style="display:block;margin-bottom:0.75rem">Reference Photo <span
-              style="color:#e05">*</span></label>
+          <label class="form-label" style="display:block;margin-bottom:0.75rem">Reference Photo <span style="color:#e05">*</span></label>
           <div class="upload-zone" id="upload-zone">
             <input type="file" id="photo-upload" accept="image/*" required>
             <div id="upload-preview" class="upload-placeholder">
               <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
               <p style="color:var(--cream);font-size:0.9rem;font-weight:500">Drag & drop or click to upload</p>
               <p style="color:var(--text3);font-size:0.78rem">JPG, PNG, WEBP — minimum 1MB recommended</p>
-              <p style="color:var(--text3);font-size:0.75rem;margin-top:0.25rem">Clear, well-lit face photos give the
-                best results</p>
+              <p style="color:var(--text3);font-size:0.75rem;margin-top:0.25rem">Clear, well-lit face photos give the best results</p>
             </div>
           </div>
         </div>
@@ -274,29 +102,17 @@
         <div style="margin-bottom:1.5rem">
           <label class="form-label">Art Type <span style="color:#e05">*</span></label>
           <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.6rem">
-            <label class="glow-card"
-              style="padding:1rem 1.5rem;cursor:pointer;display:flex;align-items:center;gap:0.75rem;flex:1;min-width:160px">
+            <label class="glow-card" style="padding:1rem 1.5rem;cursor:pointer;display:flex;align-items:center;gap:0.75rem;flex:1;min-width:160px">
               <input type="radio" name="art-type" value="pencil" required style="accent-color:var(--gold)">
-              <div>
-                <p style="color:var(--cream);font-size:0.9rem;font-weight:500">Pencil Portrait</p>
-                <p style="color:var(--text3);font-size:0.75rem">Graphite / Charcoal</p>
-              </div>
+              <div><p style="color:var(--cream);font-size:0.9rem;font-weight:500">Pencil Portrait</p><p style="color:var(--text3);font-size:0.75rem">Graphite / Charcoal</p></div>
             </label>
-            <label class="glow-card"
-              style="padding:1rem 1.5rem;cursor:pointer;display:flex;align-items:center;gap:0.75rem;flex:1;min-width:160px">
+            <label class="glow-card" style="padding:1rem 1.5rem;cursor:pointer;display:flex;align-items:center;gap:0.75rem;flex:1;min-width:160px">
               <input type="radio" name="art-type" value="mandala" style="accent-color:var(--gold)">
-              <div>
-                <p style="color:var(--cream);font-size:0.9rem;font-weight:500">Mandala Art</p>
-                <p style="color:var(--text3);font-size:0.75rem">Geometric & Intricate</p>
-              </div>
+              <div><p style="color:var(--cream);font-size:0.9rem;font-weight:500">Mandala Art</p><p style="color:var(--text3);font-size:0.75rem">Geometric & Intricate</p></div>
             </label>
-            <label class="glow-card"
-              style="padding:1rem 1.5rem;cursor:pointer;display:flex;align-items:center;gap:0.75rem;flex:1;min-width:160px">
+            <label class="glow-card" style="padding:1rem 1.5rem;cursor:pointer;display:flex;align-items:center;gap:0.75rem;flex:1;min-width:160px">
               <input type="radio" name="art-type" value="lippan" style="accent-color:var(--gold)">
-              <div>
-                <p style="color:var(--cream);font-size:0.9rem;font-weight:500">Lippan Art</p>
-                <p style="color:var(--text3);font-size:0.75rem">Traditional Mirror Work</p>
-              </div>
+              <div><p style="color:var(--cream);font-size:0.9rem;font-weight:500">Lippan Art</p><p style="color:var(--text3);font-size:0.75rem">Traditional Mirror Work</p></div>
             </label>
           </div>
         </div>
@@ -323,13 +139,11 @@
         </div>
 
         <!-- Personal Details -->
-        <h3
-          style="font-family:var(--font-serif);color:var(--cream);font-size:1.2rem;margin-bottom:1.25rem;padding-top:1rem;border-top:1px solid var(--border2)">
-          Your Details</h3>
+        <h3 style="font-family:var(--font-serif);color:var(--cream);font-size:1.2rem;margin-bottom:1.25rem;padding-top:1rem;border-top:1px solid var(--border2)">Your Details</h3>
         <div class="form-grid" style="margin-bottom:1.5rem">
           <div class="form-group">
             <label class="form-label">Full Name <span style="color:#e05">*</span></label>
-            <input type="text" class="form-input" name="name" placeholder="Rahul Sharma" required>
+            <input type="text" class="form-input" name="name" placeholder="Monu Sharma" required>
           </div>
           <div class="form-group">
             <label class="form-label">Phone Number <span style="color:#e05">*</span></label>
@@ -337,25 +151,21 @@
           </div>
           <div class="form-group full">
             <label class="form-label">Email Address <span style="color:#e05">*</span></label>
-            <input type="email" class="form-input" name="email" placeholder="rahul@example.com" required>
+            <input type="email" class="form-input" name="email" placeholder="monu@example.com" required>
           </div>
           <div class="form-group full">
             <label class="form-label">Delivery Address <span style="color:#e05">*</span></label>
-            <textarea class="form-textarea" name="address" placeholder="Enter your complete delivery address..."
-              required rows="3"></textarea>
+            <textarea class="form-textarea" name="address" placeholder="Enter your complete delivery address..." required rows="3"></textarea>
           </div>
           <div class="form-group full">
             <label class="form-label">Special Instructions / Customization Notes</label>
-            <textarea class="form-textarea" name="notes"
-              placeholder="E.g. Include my dog in the background, add a birthday message, prefer lighter shading..."
-              rows="3"></textarea>
+            <textarea class="form-textarea" name="notes" placeholder="E.g. Include my dog in the background, add a birthday message, prefer lighter shading..." rows="3"></textarea>
           </div>
         </div>
 
         <!-- Gift Option -->
         <div class="glow-card" style="padding:1.2rem;margin-bottom:2rem;display:flex;align-items:center;gap:1rem">
-          <input type="checkbox" name="gift" id="gift-check"
-            style="accent-color:var(--gold);width:18px;height:18px;flex-shrink:0">
+          <input type="checkbox" name="gift" id="gift-check" style="accent-color:var(--gold);width:18px;height:18px;flex-shrink:0">
           <label for="gift-check" style="cursor:pointer">
             <p style="color:var(--cream);font-size:0.9rem;font-weight:500">🎁 This is a gift</p>
             <p style="color:var(--text3);font-size:0.78rem">We'll add a handwritten message card (free of charge)</p>
@@ -365,15 +175,13 @@
         <button type="submit" class="btn btn-gold btn-lg" style="width:100%;justify-content:center">
           <i class="fas fa-paint-brush"></i> Place Custom Order
         </button>
-        <p style="text-align:center;color:var(--text3);font-size:0.78rem;margin-top:0.75rem">We'll confirm your order
-          via WhatsApp within 2 hours</p>
+        <p style="text-align:center;color:var(--text3);font-size:0.78rem;margin-top:0.75rem">We'll confirm your order via WhatsApp within 2 hours</p>
       </form>
     </div>
 
     <!-- Preview Panel -->
     <div class="preview-panel" data-aos="fade-left">
-      <h3 style="font-family:var(--font-serif);color:var(--cream);font-size:1.2rem;margin-bottom:1.25rem">Order Preview
-      </h3>
+      <h3 style="font-family:var(--font-serif);color:var(--cream);font-size:1.2rem;margin-bottom:1.25rem">Order Preview</h3>
       <div class="preview-card">
         <div class="preview-card-img" id="preview-img-wrap">
           <div style="text-align:center;color:var(--text3);padding:2rem">
@@ -386,30 +194,23 @@
           <div class="price-row"><span>Size</span><span id="prev-size" style="color:var(--cream)">—</span></div>
           <div class="price-row"><span>Frame</span><span id="prev-frame" style="color:var(--cream)">—</span></div>
           <div class="price-row"><span>Base Price</span><span id="prev-base" style="color:var(--cream)">₹—</span></div>
-          <div class="price-row"><span>Frame Addon</span><span id="prev-addon" style="color:var(--cream)">₹0</span>
-          </div>
+          <div class="price-row"><span>Frame Addon</span><span id="prev-addon" style="color:var(--cream)">₹0</span></div>
           <div class="price-row"><span>Delivery</span><span style="color:#4caf50">FREE</span></div>
           <div class="price-row total"><span>Total</span><span id="prev-total">₹—</span></div>
         </div>
       </div>
 
       <div class="glow-card" style="margin-top:1.5rem;padding:1.25rem">
-        <h4 style="color:var(--cream);font-size:0.9rem;margin-bottom:1rem"><i class="fas fa-shield-alt"
-            style="color:var(--gold);margin-right:0.5rem"></i>Our Guarantee</h4>
+        <h4 style="color:var(--cream);font-size:0.9rem;margin-bottom:1rem"><i class="fas fa-shield-alt" style="color:var(--gold);margin-right:0.5rem"></i>Our Guarantee</h4>
         <div style="display:flex;flex-direction:column;gap:0.6rem">
-          <p style="font-size:0.82rem;color:var(--text2);display:flex;align-items:center;gap:0.5rem"><i
-              class="fas fa-check" style="color:var(--gold)"></i> Progress photo shared before framing</p>
-          <p style="font-size:0.82rem;color:var(--text2);display:flex;align-items:center;gap:0.5rem"><i
-              class="fas fa-check" style="color:var(--gold)"></i> Free revision if not satisfied</p>
-          <p style="font-size:0.82rem;color:var(--text2);display:flex;align-items:center;gap:0.5rem"><i
-              class="fas fa-check" style="color:var(--gold)"></i> Secure packaging & insurance</p>
-          <p style="font-size:0.82rem;color:var(--text2);display:flex;align-items:center;gap:0.5rem"><i
-              class="fas fa-check" style="color:var(--gold)"></i> Delivery in 7–10 working days</p>
+          <p style="font-size:0.82rem;color:var(--text2);display:flex;align-items:center;gap:0.5rem"><i class="fas fa-check" style="color:var(--gold)"></i> Progress photo shared before framing</p>
+          <p style="font-size:0.82rem;color:var(--text2);display:flex;align-items:center;gap:0.5rem"><i class="fas fa-check" style="color:var(--gold)"></i> Free revision if not satisfied</p>
+          <p style="font-size:0.82rem;color:var(--text2);display:flex;align-items:center;gap:0.5rem"><i class="fas fa-check" style="color:var(--gold)"></i> Secure packaging & insurance</p>
+          <p style="font-size:0.82rem;color:var(--text2);display:flex;align-items:center;gap:0.5rem"><i class="fas fa-check" style="color:var(--gold)"></i> Delivery in 7–10 working days</p>
         </div>
       </div>
 
-      <a href="https://wa.me/919999999999?text=Hi%20I%20want%20to%20discuss%20a%20custom%20order"
-        class="btn btn-outline" style="width:100%;justify-content:center;margin-top:1rem">
+      <a href="https://wa.me/919040405798?text=Hi%20I%20want%20to%20discuss%20a%20custom%20order" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:1rem">
         <i class="fab fa-whatsapp"></i> Discuss on WhatsApp
       </a>
     </div>
@@ -424,20 +225,20 @@
     const frameNames = { none: 'No Frame', black: 'Classic Black', wood: 'Wooden', gold: 'Premium Golden' };
 
     function updatePreviewPrice() {
-      const size = document.getElementById('sel-size').value;
+      const size  = document.getElementById('sel-size').value;
       const frame = document.getElementById('sel-frame').value;
-      const base = basePrices[size] || 0;
+      const base  = basePrices[size] || 0;
       const addon = frameAddons[frame] || 0;
-      document.getElementById('prev-size').textContent = size || '—';
+      document.getElementById('prev-size').textContent  = size || '—';
       document.getElementById('prev-frame').textContent = frameNames[frame] || '—';
-      document.getElementById('prev-base').textContent = base ? '₹' + base : '₹—';
+      document.getElementById('prev-base').textContent  = base  ? '₹' + base  : '₹—';
       document.getElementById('prev-addon').textContent = '₹' + addon;
-      document.getElementById('prev-total').textContent = base ? '₹' + (base + addon).toLocaleString() : '₹—';
+      document.getElementById('prev-total').textContent = base  ? '₹' + (base + addon).toLocaleString() : '₹—';
     }
 
     document.querySelectorAll('input[name="art-type"]').forEach(r => {
       r.addEventListener('change', () => {
-        const labels = { pencil: 'Pencil Portrait', mandala: 'Mandala Art', lippan: 'Lippan Art' };
+        const labels = { pencil:'Pencil Portrait', mandala:'Mandala Art', lippan:'Lippan Art' };
         document.getElementById('prev-type').textContent = labels[r.value] || '—';
       });
     });
@@ -470,5 +271,4 @@
     });
   </script>
 </body>
-
 </html>

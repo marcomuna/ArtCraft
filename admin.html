@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — ArtCraft</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .admin-layout { display:grid; grid-template-columns:240px 1fr; min-height:100vh; }
+    .admin-sidebar {
+      background:var(--bg2);
+      border-right:1px solid var(--border2);
+      position:fixed; top:0; bottom:0; left:0;
+      width:240px; z-index:100;
+      display:flex; flex-direction:column;
+      padding:2rem 0;
+      overflow-y:auto;
+    }
+    .admin-sidebar-logo {
+      font-family:var(--font-display);
+      font-size:1.4rem; color:var(--gold);
+      padding:0 1.5rem 2rem;
+      display:flex; align-items:center; gap:0.75rem;
+      border-bottom:1px solid var(--border2);
+      margin-bottom:1.5rem;
+    }
+    .admin-sidebar-logo .crown { font-size:0.9rem; color:var(--gold); }
+    .admin-nav-item {
+      display:flex; align-items:center; gap:0.75rem;
+      padding:0.75rem 1.5rem;
+      font-size:0.85rem; color:var(--text2);
+      cursor:pointer; transition:all 0.2s;
+      border-left:3px solid transparent;
+      letter-spacing:0.04em;
+    }
+    .admin-nav-item:hover { color:var(--cream); background:var(--border2); }
+    .admin-nav-item.active { color:var(--gold); border-left-color:var(--gold); background:rgba(201,169,110,0.06); }
+    .admin-nav-item i { width:18px; text-align:center; }
+    .admin-content { margin-left:240px; padding:3rem; min-height:100vh; background:var(--bg); }
+    .admin-topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:2.5rem; }
+    .admin-topbar h1 { font-family:var(--font-display); font-size:1.8rem; color:var(--cream); font-weight:400; }
+    .admin-topbar-actions { display:flex; align-items:center; gap:1rem; }
+    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; margin-bottom:2.5rem; }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+    .warehouse-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1.25rem; }
+    .warehouse-card { background:var(--bg2); border:1px solid var(--border2); border-radius:var(--radius); overflow:hidden; position:relative; transition:border-color 0.3s; }
+    .warehouse-card:hover { border-color:var(--border); }
+    .warehouse-card img { width:100%; height:140px; object-fit:cover; }
+    .warehouse-card-body { padding:1rem; }
+    .warehouse-card-name { font-family:var(--font-serif); font-size:0.95rem; color:var(--cream); margin-bottom:0.35rem; }
+    .warehouse-card-meta { display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; }
+    .stock-badge { padding:3px 10px; border-radius:50px; font-size:0.7rem; font-weight:600; }
+    .stock-ok { background:rgba(76,175,80,0.15); color:#4caf50; }
+    .stock-low { background:rgba(255,152,0,0.15); color:#ff9800; }
+    .stock-out { background:rgba(244,67,54,0.15); color:#f44336; }
+    .edit-product-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.65); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; }
+    .warehouse-card:hover .edit-product-overlay { opacity:1; }
+    .month-row { display:flex; align-items:center; gap:1rem; margin-bottom:0.75rem; }
+    .month-bar { flex:1; height:8px; background:var(--bg3); border-radius:4px; overflow:hidden; }
+    .month-bar-fill { height:100%; background:linear-gradient(90deg,var(--gold),var(--gold2)); border-radius:4px; transition:width 0.8s ease; }
+    .add-product-btn { position:fixed; bottom:2rem; right:2rem; width:56px; height:56px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.4rem; color:var(--bg); box-shadow:0 4px 20px rgba(201,169,110,0.4); transition:transform 0.2s, box-shadow 0.2s; z-index:200; }
+    .add-product-btn:hover { transform:scale(1.1); box-shadow:0 8px 30px rgba(201,169,110,0.5); }
+    /* Add Product Modal */
+    .add-product-form { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; padding:2rem; }
+    .add-product-form .full { grid-column:1/-1; }
+    @media(max-width:900px) { .admin-sidebar{display:none;} .admin-content{margin-left:0;padding:2rem 1.5rem;} .stats-grid{grid-template-columns:1fr 1fr;} }
+    @media(max-width:600px) { .stats-grid{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+  <div id="loading-screen"><div class="loading-logo">ArtCraft</div><div class="loading-bar"><div class="loading-bar-inner"></div></div></div>
+
+  <!-- Sidebar -->
+  <div class="admin-sidebar">
+    <div class="admin-sidebar-logo">
+      <i class="fas fa-crown crown"></i>
+      <span>Admin</span>
+    </div>
+    <div class="admin-nav-item active" onclick="showPanel('overview')"><i class="fas fa-chart-bar"></i> Overview</div>
+    <div class="admin-nav-item" onclick="showPanel('orders')"><i class="fas fa-box"></i> Orders</div>
+    <div class="admin-nav-item" onclick="showPanel('history')"><i class="fas fa-history"></i> Order History</div>
+    <div class="admin-nav-item" onclick="showPanel('warehouse')"><i class="fas fa-warehouse"></i> Warehouse</div>
+    <div style="flex:1"></div>
+    <div class="admin-nav-item" onclick="window.location.href='index.html'"><i class="fas fa-eye"></i> View Site</div>
+    <div class="admin-nav-item" onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i> Logout</div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="admin-content">
+    <!-- Top Bar -->
+    <div class="admin-topbar">
+      <div>
+        <h1 id="panel-title">Overview</h1>
+        <p style="font-size:0.82rem;color:var(--text3);margin-top:0.25rem">Welcome back, <span style="color:var(--gold)" id="admin-name">Admin</span></p>
+      </div>
+      <div class="admin-topbar-actions">
+        <span style="font-size:0.78rem;color:var(--text3)"><i class="fas fa-circle" style="color:#4caf50;font-size:0.5rem"></i> Live</span>
+        <a href="index.html" class="btn btn-ghost btn-sm"><i class="fas fa-external-link-alt"></i> View Site</a>
+      </div>
+    </div>
+
+    <!-- OVERVIEW PANEL -->
+    <div class="tab-panel active" id="panel-overview">
+      <div class="stats-grid">
+        <div class="admin-stat-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+            <div class="admin-stat-label">Total Orders</div>
+            <div style="width:40px;height:40px;border-radius:50%;background:rgba(201,169,110,0.1);display:flex;align-items:center;justify-content:center;color:var(--gold)"><i class="fas fa-box"></i></div>
+          </div>
+          <div class="admin-stat-num">247</div>
+          <p style="font-size:0.75rem;color:#4caf50;margin-top:0.5rem"><i class="fas fa-arrow-up"></i> +18% this month</p>
+        </div>
+        <div class="admin-stat-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+            <div class="admin-stat-label">Revenue</div>
+            <div style="width:40px;height:40px;border-radius:50%;background:rgba(201,169,110,0.1);display:flex;align-items:center;justify-content:center;color:var(--gold)"><i class="fas fa-rupee-sign"></i></div>
+          </div>
+          <div class="admin-stat-num">₹3.4L</div>
+          <p style="font-size:0.75rem;color:#4caf50;margin-top:0.5rem"><i class="fas fa-arrow-up"></i> +22% this month</p>
+        </div>
+        <div class="admin-stat-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+            <div class="admin-stat-label">Pending</div>
+            <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,152,0,0.1);display:flex;align-items:center;justify-content:center;color:#ff9800"><i class="fas fa-clock"></i></div>
+          </div>
+          <div class="admin-stat-num" style="color:#ff9800">12</div>
+          <p style="font-size:0.75rem;color:var(--text3);margin-top:0.5rem">Orders awaiting artwork</p>
+        </div>
+        <div class="admin-stat-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+            <div class="admin-stat-label">Avg. Order</div>
+            <div style="width:40px;height:40px;border-radius:50%;background:rgba(201,169,110,0.1);display:flex;align-items:center;justify-content:center;color:var(--gold)"><i class="fas fa-chart-line"></i></div>
+          </div>
+          <div class="admin-stat-num">₹1,376</div>
+          <p style="font-size:0.75rem;color:var(--text3);margin-top:0.5rem">Per order average</p>
+        </div>
+      </div>
+
+      <!-- Recent orders table -->
+      <div class="admin-section">
+        <div class="admin-section-title"><i class="fas fa-list"></i> Recent Orders</div>
+        <div class="glow-card" style="padding:0;overflow:hidden">
+          <table class="admin-table">
+            <thead><tr><th>Order ID</th><th>Customer</th><th>Product Type</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody id="recent-orders-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDERS BY PRODUCT TYPE PANEL -->
+    <div class="tab-panel" id="panel-orders">
+      <div class="admin-section">
+        <div class="admin-section-title"><i class="fas fa-chart-pie"></i> Orders by Product Type</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:2rem">
+          <div class="admin-stat-card">
+            <div class="admin-stat-label" style="margin-bottom:0.5rem"><i class="fas fa-pencil-alt" style="color:var(--gold);margin-right:0.4rem"></i>Pencil Portraits</div>
+            <div class="admin-stat-num">143</div>
+            <p style="font-size:0.8rem;color:var(--text3);margin-top:0.4rem">58% of all orders</p>
+            <p style="font-size:0.85rem;color:var(--gold);font-weight:600;margin-top:0.5rem">₹1,92,457</p>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-label" style="margin-bottom:0.5rem"><i class="fas fa-circle" style="color:var(--gold);margin-right:0.4rem"></i>Mandala Art</div>
+            <div class="admin-stat-num">67</div>
+            <p style="font-size:0.8rem;color:var(--text3);margin-top:0.4rem">27% of all orders</p>
+            <p style="font-size:0.85rem;color:var(--gold);font-weight:600;margin-top:0.5rem">₹93,533</p>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-label" style="margin-bottom:0.5rem"><i class="fas fa-home" style="color:var(--gold);margin-right:0.4rem"></i>Lippan Art</div>
+            <div class="admin-stat-num">37</div>
+            <p style="font-size:0.8rem;color:var(--text3);margin-top:0.4rem">15% of all orders</p>
+            <p style="font-size:0.85rem;color:var(--gold);font-weight:600;margin-top:0.5rem">₹62,263</p>
+          </div>
+        </div>
+
+        <div class="glow-card" style="padding:0;overflow:hidden">
+          <table class="admin-table">
+            <thead><tr><th>Product Type</th><th>Orders</th><th>Units Sold</th><th>Revenue</th><th>Avg. Value</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--cream);font-weight:500">Pencil Portraits</td><td>143</td><td>167</td><td style="color:var(--gold);font-weight:600">₹1,92,457</td><td>₹1,152</td><td><span class="stock-badge stock-ok">Active</span></td></tr>
+              <tr><td style="color:var(--cream);font-weight:500">— A4 Single Portrait</td><td>82</td><td>95</td><td style="color:var(--gold)">₹73,705</td><td>₹899</td><td><span class="stock-badge stock-ok">Active</span></td></tr>
+              <tr><td style="color:var(--cream);font-weight:500">— A3 Portrait</td><td>31</td><td>34</td><td style="color:var(--gold)">₹40,269</td><td>₹1,185</td><td><span class="stock-badge stock-ok">Active</span></td></tr>
+              <tr><td style="color:var(--cream);font-weight:500">— Couple Portrait</td><td>20</td><td>23</td><td style="color:var(--gold)">₹29,900</td><td>₹1,300</td><td><span class="stock-badge stock-ok">Active</span></td></tr>
+              <tr><td style="color:var(--cream);font-weight:500">— Pet Portrait</td><td>10</td><td>15</td><td style="color:var(--gold)">₹14,985</td><td>₹999</td><td><span class="stock-badge stock-ok">Active</span></td></tr>
+              <tr><td style="color:var(--cream);font-weight:500">Mandala Art</td><td>67</td><td>74</td><td style="color:var(--gold);font-weight:600">₹93,533</td><td>₹1,396</td><td><span class="stock-badge stock-ok">Active</span></td></tr>
+              <tr><td style="color:var(--cream);font-weight:500">— Round Mandala</td><td>38</td><td>42</td><td style="color:var(--gold)">₹49,348</td><td>₹1,175</td><td><span class="stock-badge stock-ok">Active</span></td></tr>
+              <tr><td style="color:var(--cream);font-weight:500">— Large Mandala</td><td>18</td><td>20</td><td style="color:var(--gold)">₹34,182</td><td>₹1,709</td><td><span class="stock-badge stock-ok">Active</span></td></tr>
+              <tr><td style="color:var(--cream);font-weight:500">— Mandala Triptych</td><td>11</td><td>12</td><td style="color:var(--gold)">₹27,489</td><td>₹2,249</td><td><span class="stock-badge stock-low">Low Stock</span></td></tr>
+              <tr><td style="color:var(--cream);font-weight:500">Lippan Art</td><td>37</td><td>40</td><td style="color:var(--gold);font-weight:600">₹62,263</td><td>₹1,557</td><td><span class="stock-badge stock-ok">Active</span></td></tr>
+              <tr><td style="color:var(--cream);font-weight:500">— Lippan Mirror Decor</td><td>22</td><td>25</td><td style="color:var(--gold)">₹39,975</td><td>₹1,599</td><td><span class="stock-badge stock-ok">Active</span></td></tr>
+              <tr><td style="color:var(--cream);font-weight:500">— Lippan Panel Large</td><td>15</td><td>15</td><td style="color:var(--gold)">₹32,985</td><td>₹2,199</td><td><span class="stock-badge stock-low">Low Stock</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDER HISTORY PANEL -->
+    <div class="tab-panel" id="panel-history">
+      <div class="admin-section">
+        <div class="admin-section-title"><i class="fas fa-calendar-alt"></i> Order History by Month</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
+          <!-- Monthly chart -->
+          <div class="glow-card">
+            <h4 style="font-family:var(--font-serif);color:var(--cream);margin-bottom:1.5rem">Monthly Revenue</h4>
+            <div id="monthly-chart"></div>
+          </div>
+          <!-- By type per month table -->
+          <div class="glow-card" style="padding:0;overflow:hidden">
+            <table class="admin-table">
+              <thead><tr><th>Month</th><th>Portraits</th><th>Mandala</th><th>Lippan</th><th>Total</th></tr></thead>
+              <tbody id="history-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WAREHOUSE PANEL -->
+    <div class="tab-panel" id="panel-warehouse">
+      <div class="admin-section">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
+          <div class="admin-section-title" style="margin-bottom:0"><i class="fas fa-warehouse"></i> Warehouse Inventory</div>
+          <button class="btn btn-gold btn-sm" onclick="openAddProduct()"><i class="fas fa-plus"></i> Add Product</button>
+        </div>
+
+        <!-- Warehouse summary -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:2rem">
+          <div class="admin-stat-card">
+            <div class="admin-stat-label">Total Products</div>
+            <div class="admin-stat-num">12</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-label">Total Stock Units</div>
+            <div class="admin-stat-num">110</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-label">Inventory Value</div>
+            <div class="admin-stat-num">₹1.4L</div>
+          </div>
+        </div>
+
+        <div class="warehouse-grid" id="warehouse-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Product Modal -->
+  <div class="modal-overlay" id="add-product-modal">
+    <div class="modal-box" style="max-width:600px">
+      <button class="modal-close" onclick="document.getElementById('add-product-modal').classList.remove('open')"><i class="fas fa-times"></i></button>
+      <div style="padding:2rem 2rem 0;border-bottom:1px solid var(--border2)">
+        <h3 style="font-family:var(--font-serif);font-size:1.3rem;color:var(--cream);margin-bottom:1rem" id="modal-title">Add New Product</h3>
+      </div>
+      <form onsubmit="saveProduct(event)" class="add-product-form">
+        <div class="form-group">
+          <label class="form-label">Product Name *</label>
+          <input class="form-input" type="text" id="p-name" placeholder="e.g. A4 Pencil Portrait" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category *</label>
+          <select class="form-select" id="p-cat" required>
+            <option value="">Select</option>
+            <option value="pencil">Pencil Portraits</option>
+            <option value="mandala">Mandala Art</option>
+            <option value="lippan">Lippan Art</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Price (₹) *</label>
+          <input class="form-input" type="number" id="p-price" placeholder="899" min="100" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Old Price (₹)</label>
+          <input class="form-input" type="number" id="p-old-price" placeholder="(optional)">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Size</label>
+          <select class="form-select" id="p-size">
+            <option value="a4">A4</option>
+            <option value="a3">A3</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Stock Units</label>
+          <input class="form-input" type="number" id="p-stock" placeholder="10" min="0">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Badge (optional)</label>
+          <select class="form-select" id="p-badge">
+            <option value="">No badge</option>
+            <option>Bestseller</option>
+            <option>New</option>
+            <option>Premium</option>
+            <option>Limited</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Product Image URL</label>
+          <input class="form-input" type="text" id="p-image" placeholder="https://picsum.photos/seed/my-product/400/530">
+        </div>
+        <div class="full" style="display:flex;justify-content:flex-end;gap:0.75rem">
+          <button type="button" onclick="document.getElementById('add-product-modal').classList.remove('open')" class="btn btn-ghost">Cancel</button>
+          <button type="submit" class="btn btn-gold"><i class="fas fa-save"></i> Save Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Floating Add Product Button -->
+  <button class="add-product-btn" onclick="showPanel('warehouse');openAddProduct()" title="Add Product">
+    <i class="fas fa-plus"></i>
+  </button>
+
+  <div id="toast-container"></div>
+  <script src="script.js"></script>
+  <script>
+    // Admin guard
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = getUser();
+      if (!user || !user.isAdmin) {
+        window.location.href = 'auth.html';
+        return;
+      }
+      document.getElementById('admin-name').textContent = user.name;
+      initAdmin();
+    });
+
+    const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const MONTH_DATA = [
+      { m:'Nov 2025', p:8,  mand:4,  lipp:2,  total:14 },
+      { m:'Dec 2025', p:14, mand:6,  lipp:3,  total:23 },
+      { m:'Jan 2026', p:18, mand:8,  lipp:4,  total:30 },
+      { m:'Feb 2026', p:22, mand:10, lipp:5,  total:37 },
+      { m:'Mar 2026', p:25, mand:11, lipp:6,  total:42 },
+      { m:'Apr 2026', p:20, mand:9,  lipp:5,  total:34 },
+      { m:'May 2026', p:16, mand:7,  lipp:4,  total:27 },
+    ];
+
+    const RECENT_ORDERS = [
+      { id:'#AC-2241', customer:'Priya Sharma',  type:'Pencil Portrait', amt:1449, status:'Delivered', date:'11 May 2026' },
+      { id:'#AC-2240', customer:'Amit Verma',    type:'Mandala Art',     amt:1899, status:'In Progress', date:'10 May 2026' },
+      { id:'#AC-2239', customer:'Neha Gupta',    type:'Lippan Art',      amt:2199, status:'Pending',     date:'10 May 2026' },
+      { id:'#AC-2238', customer:'Rohan Mehta',   type:'Pencil Portrait', amt:899,  status:'Delivered',   date:'09 May 2026' },
+      { id:'#AC-2237', customer:'Kavita Das',    type:'Mandala Art',     amt:2499, status:'Shipped',     date:'09 May 2026' },
+      { id:'#AC-2236', customer:'Suresh Patel',  type:'Pencil Portrait', amt:1299, status:'Delivered',   date:'08 May 2026' },
+    ];
+
+    const STATUS_COLORS = {
+      'Delivered':   '#4caf50',
+      'Shipped':     '#2196f3',
+      'In Progress': '#ff9800',
+      'Pending':     '#9e9e9e',
+    };
+
+    function initAdmin() {
+      // Recent orders
+      const tbody = document.getElementById('recent-orders-body');
+      if (tbody) {
+        tbody.innerHTML = RECENT_ORDERS.map(o => `
+          <tr>
+            <td style="color:var(--gold);font-weight:600">${o.id}</td>
+            <td style="color:var(--cream)">${o.customer}</td>
+            <td>${o.type}</td>
+            <td style="color:var(--gold);font-weight:600">₹${o.amt.toLocaleString()}</td>
+            <td><span style="padding:3px 10px;border-radius:50px;font-size:0.72rem;font-weight:600;background:${STATUS_COLORS[o.status]}22;color:${STATUS_COLORS[o.status]}">${o.status}</span></td>
+            <td>${o.date}</td>
+          </tr>`).join('');
+      }
+
+      // History table
+      const histBody = document.getElementById('history-table-body');
+      if (histBody) {
+        histBody.innerHTML = MONTH_DATA.map(d => `
+          <tr>
+            <td style="color:var(--cream);white-space:nowrap">${d.m}</td>
+            <td>${d.p}</td><td>${d.mand}</td><td>${d.lipp}</td>
+            <td style="color:var(--gold);font-weight:600">${d.total}</td>
+          </tr>`).join('');
+      }
+
+      // Monthly chart
+      const chart = document.getElementById('monthly-chart');
+      if (chart) {
+        const max = Math.max(...MONTH_DATA.map(d => d.total));
+        chart.innerHTML = MONTH_DATA.map(d => `
+          <div class="month-row">
+            <span style="width:60px;font-size:0.75rem;color:var(--text3);flex-shrink:0">${d.m.split(' ')[0]}</span>
+            <div class="month-bar"><div class="month-bar-fill" style="width:${(d.total/max)*100}%"></div></div>
+            <span style="width:30px;text-align:right;font-size:0.78rem;color:var(--gold);flex-shrink:0">${d.total}</span>
+          </div>`).join('');
+      }
+
+      // Warehouse grid
+      renderWarehouse();
+    }
+
+    function renderWarehouse() {
+      const grid = document.getElementById('warehouse-grid');
+      if (!grid) return;
+      const products = getProducts();
+      grid.innerHTML = products.map(p => {
+        const stock = p.stock || 0;
+        const stockClass = stock > 8 ? 'stock-ok' : stock > 0 ? 'stock-low' : 'stock-out';
+        const stockLabel = stock > 8 ? 'In Stock' : stock > 0 ? `Low (${stock})` : 'Out of Stock';
+        const totalVal = (p.price * (stock || 0)).toLocaleString();
+        return `
+        <div class="warehouse-card">
+          <div style="position:relative">
+            <img src="${p.image}" alt="${p.name}" loading="lazy">
+            <div class="edit-product-overlay">
+              <button onclick="editProduct('${p.id}')" class="btn btn-gold btn-sm"><i class="fas fa-pencil-alt"></i> Edit</button>
+            </div>
+          </div>
+          <div class="warehouse-card-body">
+            <p class="warehouse-card-name">${p.name}</p>
+            <p style="font-size:0.72rem;color:var(--gold);margin-bottom:0.5rem">${p.category}</p>
+            <div class="warehouse-card-meta">
+              <span style="color:var(--cream);font-weight:600">₹${p.price.toLocaleString()}</span>
+              <span class="stock-badge ${stockClass}">${stockLabel}</span>
+            </div>
+            <p style="font-size:0.72rem;color:var(--text3);margin-top:0.5rem">Value: ₹${totalVal}</p>
+          </div>
+        </div>`}).join('');
+    }
+
+    let editingId = null;
+    function openAddProduct() {
+      editingId = null;
+      document.getElementById('modal-title').textContent = 'Add New Product';
+      document.getElementById('add-product-modal').querySelector('form').reset();
+      document.getElementById('add-product-modal').classList.add('open');
+    }
+    function editProduct(id) {
+      const products = getProducts();
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+      editingId = id;
+      document.getElementById('modal-title').textContent = 'Edit Product';
+      document.getElementById('p-name').value      = p.name;
+      document.getElementById('p-cat').value       = p.cat;
+      document.getElementById('p-price').value     = p.price;
+      document.getElementById('p-old-price').value = p.oldPrice || '';
+      document.getElementById('p-size').value      = p.size;
+      document.getElementById('p-stock').value     = p.stock || '';
+      document.getElementById('p-badge').value     = p.badge || '';
+      document.getElementById('p-image').value     = p.image;
+      document.getElementById('add-product-modal').classList.add('open');
+    }
+    function saveProduct(e) {
+      e.preventDefault();
+      const products = getProducts();
+      const catMap = { pencil:'Pencil Portraits', mandala:'Mandala Art', lippan:'Lippan Art' };
+      const cat = document.getElementById('p-cat').value;
+      const newP = {
+        id:       editingId || ('p' + Date.now()),
+        name:     document.getElementById('p-name').value,
+        cat,
+        category: catMap[cat] || cat,
+        price:    parseInt(document.getElementById('p-price').value),
+        oldPrice: parseInt(document.getElementById('p-old-price').value) || undefined,
+        size:     document.getElementById('p-size').value,
+        frame:    'none',
+        stock:    parseInt(document.getElementById('p-stock').value) || 10,
+        badge:    document.getElementById('p-badge').value || undefined,
+        image:    document.getElementById('p-image').value || 'https://picsum.photos/seed/' + Date.now() + '/400/530',
+      };
+      if (editingId) {
+        const idx = products.findIndex(x => x.id === editingId);
+        if (idx > -1) products[idx] = newP;
+      } else {
+        products.push(newP);
+      }
+      saveProducts(products);
+      document.getElementById('add-product-modal').classList.remove('open');
+      renderWarehouse();
+      showToast('<i class="fas fa-check-circle"></i> Product saved!', 'success');
+    }
+
+    document.getElementById('add-product-modal').addEventListener('click', function(e) {
+      if (e.target === this) this.classList.remove('open');
+    });
+
+    let currentPanel = 'overview';
+    function showPanel(name) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
+      document.getElementById('panel-' + name).classList.add('active');
+      const panels = { overview:'Overview', orders:'Orders', history:'Order History', warehouse:'Warehouse' };
+      document.getElementById('panel-title').textContent = panels[name] || name;
+      currentPanel = name;
+      const navItems = document.querySelectorAll('.admin-nav-item');
+      const panelIdx = { overview:0, orders:1, history:2, warehouse:3 };
+      if (panelIdx[name] !== undefined) navItems[panelIdx[name]].classList.add('active');
+      if (name === 'warehouse') renderWarehouse();
+    }
+  </script>
+</body>
+</html>
