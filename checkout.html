@@ -1,284 +1,830 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout — ArtCraft</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <style>
-    .checkout-layout { display:grid; grid-template-columns:1.4fr 1fr; gap:3rem; max-width:1200px; margin:0 auto; padding:3rem 5%; }
-    .checkout-section { margin-bottom:2rem; }
-    .checkout-heading { font-family:var(--font-serif); font-size:1.15rem; color:var(--cream); margin-bottom:1.25rem; display:flex; align-items:center; gap:0.75rem; }
-    .checkout-heading .step-badge { width:28px; height:28px; border-radius:50%; background:var(--gold); color:var(--bg); font-size:0.78rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; }
-    .form-grid .full { grid-column:1/-1; }
-    .payment-option { display:flex; align-items:center; gap:1rem; padding:1rem 1.25rem; border:1px solid var(--border2); border-radius:var(--radius2); cursor:pointer; transition:border-color 0.2s, background 0.2s; margin-bottom:0.75rem; }
-    .payment-option:hover { border-color:var(--border); }
-    .payment-option.selected { border-color:var(--gold); background:rgba(201,169,110,0.06); }
-    .payment-option input[type="radio"] { accent-color:var(--gold); width:18px; height:18px; flex-shrink:0; }
-    .payment-option label { cursor:pointer; flex:1; }
-    .payment-option p { font-size:0.88rem; color:var(--cream); font-weight:500; }
-    .payment-option span { font-size:0.75rem; color:var(--text3); }
-    .order-summary-panel { position:sticky; top:calc(var(--nav-h) + 1.5rem); height:max-content; }
-    .cod-notice { background:rgba(201,169,110,0.07); border:1px solid var(--border); border-radius:var(--radius2); padding:1rem; margin-top:0.75rem; font-size:0.82rem; color:var(--text2); line-height:1.7; display:none; }
-    .cod-notice i { color:var(--gold); margin-right:0.4rem; }
-    .upi-popup-box { padding:2.5rem; max-width:440px; width:100%; text-align:center; position:relative; }
-    .qr-placeholder { width:200px; height:200px; margin:1.25rem auto; border:2px dashed var(--border); border-radius:var(--radius2); display:flex; align-items:center; justify-content:center; background:var(--bg3); color:var(--text3); font-size:0.85rem; flex-direction:column; gap:0.75rem; }
-    .screenshot-drop { border:2px dashed var(--border); border-radius:var(--radius2); padding:1.5rem; text-align:center; cursor:pointer; transition:border-color 0.2s; margin-top:1rem; }
-    .screenshot-drop:hover { border-color:var(--gold); }
-    .screenshot-drop input { display:none; }
-    @media(max-width:900px){ .checkout-layout{grid-template-columns:1fr;} .order-summary-panel{position:static;} .form-grid{grid-template-columns:1fr;} }
-  </style>
-</head>
-<body>
-  <div id="loading-screen"><div class="loading-logo">ArtCraft</div><div class="loading-bar"><div class="loading-bar-inner"></div></div></div>
-  <div class="cursor-dot"></div><div class="cursor-ring"></div>
-
-  <nav class="navbar scrolled">
-    <div class="nav-inner">
-      <a href="index.html" class="nav-logo">ArtCraft</a>
-      <div style="display:flex;align-items:center;gap:1.5rem;font-size:0.82rem;color:var(--text3)">
-        <span style="color:var(--gold)">Cart</span>
-        <i class="fas fa-chevron-right" style="font-size:0.6rem"></i>
-        <span style="color:var(--cream);font-weight:500">Checkout</span>
-        <i class="fas fa-chevron-right" style="font-size:0.6rem"></i>
-        <span>Confirmation</span>
-      </div>
-      <a href="cart.html" class="btn btn-ghost btn-sm"><i class="fas fa-arrow-left"></i> Back to Cart</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout — ArtCraft</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      .checkout-layout {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 3rem 5%;
+      }
+      .checkout-section {
+        margin-bottom: 2rem;
+      }
+      .checkout-heading {
+        font-family: var(--font-serif);
+        font-size: 1.15rem;
+        color: var(--cream);
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .checkout-heading .step-badge {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--gold);
+        color: var(--bg);
+        font-size: 0.78rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+      }
+      .form-grid .full {
+        grid-column: 1/-1;
+      }
+      .payment-option {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
+        border: 1px solid var(--border2);
+        border-radius: var(--radius2);
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+        margin-bottom: 0.75rem;
+      }
+      .payment-option:hover {
+        border-color: var(--border);
+      }
+      .payment-option.selected {
+        border-color: var(--gold);
+        background: rgba(201, 169, 110, 0.06);
+      }
+      .payment-option input[type="radio"] {
+        accent-color: var(--gold);
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+      }
+      .payment-option label {
+        cursor: pointer;
+        flex: 1;
+      }
+      .payment-option p {
+        font-size: 0.88rem;
+        color: var(--cream);
+        font-weight: 500;
+      }
+      .payment-option span {
+        font-size: 0.75rem;
+        color: var(--text3);
+      }
+      .order-summary-panel {
+        position: sticky;
+        top: calc(var(--nav-h) + 1.5rem);
+        height: max-content;
+      }
+      .cod-notice {
+        background: rgba(201, 169, 110, 0.07);
+        border: 1px solid var(--border);
+        border-radius: var(--radius2);
+        padding: 1rem;
+        margin-top: 0.75rem;
+        font-size: 0.82rem;
+        color: var(--text2);
+        line-height: 1.7;
+        display: none;
+      }
+      .cod-notice i {
+        color: var(--gold);
+        margin-right: 0.4rem;
+      }
+      .upi-popup-box {
+        padding: 2.5rem;
+        max-width: 440px;
+        width: 100%;
+        text-align: center;
+        position: relative;
+      }
+      .qr-placeholder {
+        width: 200px;
+        height: 200px;
+        margin: 1.25rem auto;
+        border: 2px dashed var(--border);
+        border-radius: var(--radius2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg3);
+        color: var(--text3);
+        font-size: 0.85rem;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .screenshot-drop {
+        border: 2px dashed var(--border);
+        border-radius: var(--radius2);
+        padding: 1.5rem;
+        text-align: center;
+        cursor: pointer;
+        transition: border-color 0.2s;
+        margin-top: 1rem;
+      }
+      .screenshot-drop:hover {
+        border-color: var(--gold);
+      }
+      .screenshot-drop input {
+        display: none;
+      }
+      @media (max-width: 900px) {
+        .checkout-layout {
+          grid-template-columns: 1fr;
+        }
+        .order-summary-panel {
+          position: static;
+        }
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loading-screen">
+      <div class="loading-logo">ArtCraft</div>
+      <div class="loading-bar"><div class="loading-bar-inner"></div></div>
     </div>
-  </nav>
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
 
-  <div style="padding-top:var(--nav-h)"></div>
-
-  <div class="checkout-layout">
-    <form id="checkout-form">
-      <!-- Contact Info -->
-      <div class="checkout-section">
-        <h3 class="checkout-heading"><span class="step-badge">1</span>Contact Information</h3>
-        <div class="form-grid">
-          <div class="form-group"><label class="form-label">First Name *</label><input class="form-input" type="text" placeholder="Monu" required></div>
-          <div class="form-group"><label class="form-label">Last Name *</label><input class="form-input" type="text" placeholder="Sharma" required></div>
-          <div class="form-group full"><label class="form-label">Email Address *</label><input class="form-input" type="email" placeholder="monu@example.com" required></div>
-          <div class="form-group full"><label class="form-label">Phone Number *</label><input class="form-input" type="tel" placeholder="+91 98765 43210" required></div>
+    <nav class="navbar scrolled">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">ArtCraft</a>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            font-size: 0.82rem;
+            color: var(--text3);
+          "
+        >
+          <span style="color: var(--gold)">Cart</span>
+          <i class="fas fa-chevron-right" style="font-size: 0.6rem"></i>
+          <span style="color: var(--cream); font-weight: 500">Checkout</span>
+          <i class="fas fa-chevron-right" style="font-size: 0.6rem"></i>
+          <span>Confirmation</span>
         </div>
+        <a href="cart.html" class="btn btn-ghost btn-sm"
+          ><i class="fas fa-arrow-left"></i> Back to Cart</a
+        >
       </div>
+    </nav>
 
-      <!-- Shipping -->
-      <div class="checkout-section">
-        <h3 class="checkout-heading"><span class="step-badge">2</span>Shipping Address</h3>
-        <div class="form-grid">
-          <div class="form-group full"><label class="form-label">Address Line 1 *</label><input class="form-input" type="text" placeholder="House no., Street name" required></div>
-          <div class="form-group full"><label class="form-label">Address Line 2</label><input class="form-input" type="text" placeholder="Apartment, area (optional)"></div>
-          <div class="form-group"><label class="form-label">City *</label><input class="form-input" type="text" placeholder="Rayagada" required></div>
-          <div class="form-group"><label class="form-label">State *</label>
-            <select class="form-select" required>
-              <option value="">Select State</option>
-              <option selected>Odisha</option>
-              <option>Rajasthan</option><option>Delhi</option><option>Maharashtra</option>
-              <option>Karnataka</option><option>Tamil Nadu</option><option>Uttar Pradesh</option>
-              <option>Gujarat</option><option>West Bengal</option><option>Other</option>
-            </select>
+    <div style="padding-top: var(--nav-h)"></div>
+
+    <div class="checkout-layout">
+      <form id="checkout-form">
+        <!-- Contact Info -->
+        <div class="checkout-section">
+          <h3 class="checkout-heading">
+            <span class="step-badge">1</span>Contact Information
+          </h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">First Name *</label
+              ><input
+                class="form-input"
+                type="text"
+                placeholder="Monu"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name *</label
+              ><input
+                class="form-input"
+                type="text"
+                placeholder="Sharma"
+                required
+              />
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Email Address *</label
+              ><input
+                class="form-input"
+                type="email"
+                placeholder="monu@example.com"
+                required
+              />
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Phone Number *</label
+              ><input
+                class="form-input"
+                type="tel"
+                placeholder="+91 98765 43210"
+                required
+              />
+            </div>
           </div>
-          <div class="form-group"><label class="form-label">Pincode *</label><input class="form-input" type="text" placeholder="765001" maxlength="6" required></div>
-          <div class="form-group"><label class="form-label">Country</label><input class="form-input" value="India" readonly style="opacity:0.6"></div>
         </div>
-        <label style="display:flex;align-items:center;gap:0.75rem;margin-top:1rem;cursor:pointer;font-size:0.85rem;color:var(--text2)">
-          <input type="checkbox" style="accent-color:var(--gold)">
-          This is a gift — include handwritten message card
-        </label>
-      </div>
 
-      <!-- Payment -->
-      <div class="checkout-section">
-        <h3 class="checkout-heading"><span class="step-badge">3</span>Payment Method</h3>
-
-        <div class="payment-option selected" onclick="selectPayment('upi',this)">
-          <input type="radio" name="payment" id="upi" value="upi" checked>
-          <label for="upi">
-            <p>UPI / QR Code</p>
-            <span>Pay instantly via any UPI app — click to view QR & upload screenshot</span>
+        <!-- Shipping -->
+        <div class="checkout-section">
+          <h3 class="checkout-heading">
+            <span class="step-badge">2</span>Shipping Address
+          </h3>
+          <div class="form-grid">
+            <div class="form-group full">
+              <label class="form-label">Address Line 1 *</label
+              ><input
+                class="form-input"
+                type="text"
+                placeholder="House no., Street name"
+                required
+              />
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Address Line 2</label
+              ><input
+                class="form-input"
+                type="text"
+                placeholder="Apartment, area (optional)"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">City *</label
+              ><input
+                class="form-input"
+                type="text"
+                placeholder="Rayagada"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">State *</label>
+              <select class="form-select" required>
+                <option value="">Select State</option>
+                <option selected>Odisha</option>
+                <option>Rajasthan</option>
+                <option>Delhi</option>
+                <option>Maharashtra</option>
+                <option>Karnataka</option>
+                <option>Tamil Nadu</option>
+                <option>Uttar Pradesh</option>
+                <option>Gujarat</option>
+                <option>West Bengal</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Pincode *</label
+              ><input
+                class="form-input"
+                type="text"
+                placeholder="765001"
+                maxlength="6"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Country</label
+              ><input
+                class="form-input"
+                value="India"
+                readonly
+                style="opacity: 0.6"
+              />
+            </div>
+          </div>
+          <label
+            style="
+              display: flex;
+              align-items: center;
+              gap: 0.75rem;
+              margin-top: 1rem;
+              cursor: pointer;
+              font-size: 0.85rem;
+              color: var(--text2);
+            "
+          >
+            <input type="checkbox" style="accent-color: var(--gold)" />
+            This is a gift — include handwritten message card
           </label>
-          <i class="fas fa-qrcode" style="color:var(--gold);font-size:1.3rem"></i>
         </div>
 
-        <div class="payment-option" onclick="selectPayment('cod',this)">
-          <input type="radio" name="payment" id="cod" value="cod">
-          <label for="cod">
-            <p>Cash on Delivery (COD)</p>
-            <span>Pay when your order arrives</span>
-          </label>
-          <i class="fas fa-money-bill-wave" style="color:var(--gold);font-size:1.2rem"></i>
-        </div>
-        <div class="cod-notice" id="cod-notice">
-          <p><i class="fas fa-info-circle"></i> <strong style="color:var(--cream)">COD Terms:</strong></p>
-          <p>• Extra <strong style="color:var(--cream)">₹80</strong> COD handling charge applies</p>
-          <p>• <strong style="color:var(--cream)">20% advance payment</strong> required (minimum ₹500) via UPI before dispatch</p>
-          <p>• Balance paid on delivery</p>
-        </div>
+        <!-- Payment -->
+        <div class="checkout-section">
+          <h3 class="checkout-heading">
+            <span class="step-badge">3</span>Payment Method
+          </h3>
 
-        <!-- UPI Payment Popup trigger notice -->
-        <div id="upi-notice" style="background:rgba(201,169,110,0.07);border:1px solid var(--border);border-radius:var(--radius2);padding:1rem;margin-top:0.75rem;font-size:0.82rem;color:var(--text2);display:flex;align-items:center;gap:0.75rem">
-          <i class="fas fa-qrcode" style="color:var(--gold);font-size:1.2rem;flex-shrink:0"></i>
-          <span>Click <button type="button" onclick="openUpiPopup()" style="color:var(--gold);text-decoration:underline;background:none;border:none;cursor:pointer;font-size:0.82rem;padding:0">"Pay via UPI"</button> below to see QR code and upload your payment screenshot before placing order.</span>
-        </div>
-      </div>
+          <div
+            class="payment-option selected"
+            onclick="selectPayment('upi', this)"
+          >
+            <input type="radio" name="payment" id="upi" value="upi" checked />
+            <label for="upi">
+              <p>UPI / QR Code</p>
+              <span
+                >Pay instantly via any UPI app — click to view QR & upload
+                screenshot</span
+              >
+            </label>
+            <i
+              class="fas fa-qrcode"
+              style="color: var(--gold); font-size: 1.3rem"
+            ></i>
+          </div>
 
-      <button type="button" id="upi-pay-btn" onclick="openUpiPopup()" class="btn btn-outline" style="width:100%;justify-content:center;margin-bottom:0.75rem;padding:0.85rem">
-        <i class="fas fa-qrcode"></i> Pay via UPI / QR Code
-      </button>
-      <button type="submit" class="btn btn-gold btn-lg" style="width:100%;justify-content:center">
-        <i class="fas fa-lock"></i> Place Order Securely
-      </button>
-      <p style="text-align:center;color:var(--text3);font-size:0.75rem;margin-top:0.75rem">
-        <i class="fas fa-shield-alt"></i> 256-bit SSL encryption · Your data is safe
-      </p>
-    </form>
+          <div class="payment-option" onclick="selectPayment('cod', this)">
+            <input type="radio" name="payment" id="cod" value="cod" />
+            <label for="cod">
+              <p>Cash on Delivery (COD)</p>
+              <span>Pay when your order arrives</span>
+            </label>
+            <i
+              class="fas fa-money-bill-wave"
+              style="color: var(--gold); font-size: 1.2rem"
+            ></i>
+          </div>
+          <div class="cod-notice" id="cod-notice">
+            <p>
+              <i class="fas fa-info-circle"></i>
+              <strong style="color: var(--cream)">COD Terms:</strong>
+            </p>
+            <p>
+              • Extra <strong style="color: var(--cream)">₹80</strong> COD
+              handling charge applies
+            </p>
+            <p>
+              •
+              <strong style="color: var(--cream)">20% advance payment</strong>
+              required (minimum ₹500) via UPI before dispatch
+            </p>
+            <p>• Balance paid on delivery</p>
+          </div>
 
-    <!-- Order Summary -->
-    <div class="order-summary-panel">
-      <div class="glow-card" style="padding:1.75rem">
-        <h3 style="font-family:var(--font-serif);color:var(--cream);font-size:1.15rem;margin-bottom:1.25rem">Order Summary</h3>
-        <div id="order-summary-items" style="margin-bottom:1rem">
-          <div style="text-align:center;padding:2rem 0;color:var(--text3)"><i class="fas fa-spinner fa-spin"></i></div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:0.5rem;padding-top:0.75rem;border-top:1px solid var(--border2)">
-          <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:var(--text2)"><span>Subtotal</span><span id="co-subtotal">₹0</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#4caf50" id="co-discount-row"><span>Discount</span><span id="co-discount">—</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:var(--text2)"><span>Shipping</span><span id="co-shipping">₹0</span></div>
-          <div style="display:flex;justify-content:space-between;font-weight:600;color:var(--gold);font-size:1rem;padding-top:0.5rem;border-top:1px solid var(--border2);margin-top:0.25rem"><span>Total</span><span id="co-total">₹0</span></div>
-        </div>
-      </div>
-      <div class="glow-card" style="padding:1.25rem;margin-top:1rem">
-        <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <p style="font-size:0.82rem;color:var(--text2);display:flex;align-items:center;gap:0.5rem"><i class="fas fa-undo" style="color:var(--gold)"></i> Free revision guarantee</p>
-          <p style="font-size:0.82rem;color:var(--text2);display:flex;align-items:center;gap:0.5rem"><i class="fas fa-shield-alt" style="color:var(--gold)"></i> Secure packaging</p>
-          <p style="font-size:0.82rem;color:var(--text2);display:flex;align-items:center;gap:0.5rem"><i class="fas fa-truck" style="color:var(--gold)"></i> Delivered in 7–10 days</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- UPI Popup -->
-  <div class="modal-overlay" id="upi-modal">
-    <div class="modal-box" style="max-width:440px">
-      <button class="modal-close" onclick="closeUpiPopup()"><i class="fas fa-times"></i></button>
-      <div class="upi-popup-box">
-        <div class="section-tag">Secure Payment</div>
-        <h3 style="font-family:var(--font-serif);font-size:1.4rem;color:var(--cream);margin-bottom:0.5rem">Pay via UPI / QR</h3>
-        <div class="qr-placeholder">
-          <i class="fas fa-qrcode" style="font-size:3rem;color:var(--gold)"></i>
-          <span>QR Code</span>
-          <span style="font-size:0.7rem">Scan to pay</span>
-        </div>
-        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:0.85rem;margin-bottom:1rem">
-          <p style="font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem">UPI ID</p>
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <code id="upi-id-text" style="color:var(--gold);font-size:0.95rem;letter-spacing:0.05em">artcraft@upi</code>
-            <button onclick="copyUpiId()" style="font-size:0.75rem;color:var(--text2);background:none;border:1px solid var(--border);border-radius:4px;padding:3px 8px;cursor:pointer" title="Copy">
-              <i class="fas fa-copy"></i> Copy
-            </button>
+          <!-- UPI Payment Popup trigger notice -->
+          <div
+            id="upi-notice"
+            style="
+              background: rgba(201, 169, 110, 0.07);
+              border: 1px solid var(--border);
+              border-radius: var(--radius2);
+              padding: 1rem;
+              margin-top: 0.75rem;
+              font-size: 0.82rem;
+              color: var(--text2);
+              display: flex;
+              align-items: center;
+              gap: 0.75rem;
+            "
+          >
+            <i
+              class="fas fa-qrcode"
+              style="color: var(--gold); font-size: 1.2rem; flex-shrink: 0"
+            ></i>
+            <span
+              >Click
+              <button
+                type="button"
+                onclick="openUpiPopup()"
+                style="
+                  color: var(--gold);
+                  text-decoration: underline;
+                  background: none;
+                  border: none;
+                  cursor: pointer;
+                  font-size: 0.82rem;
+                  padding: 0;
+                "
+              >
+                "Pay via UPI"
+              </button>
+              below to see QR code and upload your payment screenshot before
+              placing order.</span
+            >
           </div>
         </div>
-        <div class="screenshot-drop" onclick="document.getElementById('screenshot-input').click()">
-          <input type="file" id="screenshot-input" accept="image/*" onchange="handleScreenshot(this)">
-          <div id="screenshot-preview">
-            <i class="fas fa-cloud-upload-alt" style="font-size:1.8rem;color:var(--gold);margin-bottom:0.5rem;display:block"></i>
-            <p style="font-size:0.85rem;color:var(--text2)">Upload Payment Screenshot</p>
-            <p style="font-size:0.72rem;color:var(--text3);margin-top:0.25rem">Click to browse or drag & drop</p>
-          </div>
-        </div>
-        <button onclick="confirmUpiPayment()" class="btn btn-gold" style="width:100%;justify-content:center;margin-top:1.25rem;padding:0.85rem">
-          <i class="fas fa-check-circle"></i> Confirm Payment Done
+
+        <button
+          type="button"
+          id="upi-pay-btn"
+          onclick="openUpiPopup()"
+          class="btn btn-outline"
+          style="
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+            padding: 0.85rem;
+          "
+        >
+          <i class="fas fa-qrcode"></i> Pay via UPI / QR Code
         </button>
-        <p style="font-size:0.75rem;color:var(--text3);margin-top:0.75rem">After confirming, proceed to Place Order</p>
+        <button
+          type="submit"
+          class="btn btn-gold btn-lg"
+          style="width: 100%; justify-content: center"
+        >
+          <i class="fas fa-lock"></i> Place Order Securely
+        </button>
+        <p
+          style="
+            text-align: center;
+            color: var(--text3);
+            font-size: 0.75rem;
+            margin-top: 0.75rem;
+          "
+        >
+          <i class="fas fa-shield-alt"></i> 256-bit SSL encryption · Your data
+          is safe
+        </p>
+      </form>
+
+      <!-- Order Summary -->
+      <div class="order-summary-panel">
+        <div class="glow-card" style="padding: 1.75rem">
+          <h3
+            style="
+              font-family: var(--font-serif);
+              color: var(--cream);
+              font-size: 1.15rem;
+              margin-bottom: 1.25rem;
+            "
+          >
+            Order Summary
+          </h3>
+          <div id="order-summary-items" style="margin-bottom: 1rem">
+            <div
+              style="text-align: center; padding: 2rem 0; color: var(--text3)"
+            >
+              <i class="fas fa-spinner fa-spin"></i>
+            </div>
+          </div>
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              gap: 0.5rem;
+              padding-top: 0.75rem;
+              border-top: 1px solid var(--border2);
+            "
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.85rem;
+                color: var(--text2);
+              "
+            >
+              <span>Subtotal</span><span id="co-subtotal">₹0</span>
+            </div>
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.85rem;
+                color: #4caf50;
+              "
+              id="co-discount-row"
+            >
+              <span>Discount</span><span id="co-discount">—</span>
+            </div>
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.85rem;
+                color: var(--text2);
+              "
+            >
+              <span>Shipping</span><span id="co-shipping">₹0</span>
+            </div>
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                font-weight: 600;
+                color: var(--gold);
+                font-size: 1rem;
+                padding-top: 0.5rem;
+                border-top: 1px solid var(--border2);
+                margin-top: 0.25rem;
+              "
+            >
+              <span>Total</span><span id="co-total">₹0</span>
+            </div>
+          </div>
+        </div>
+        <div class="glow-card" style="padding: 1.25rem; margin-top: 1rem">
+          <div style="display: flex; flex-direction: column; gap: 0.5rem">
+            <p
+              style="
+                font-size: 0.82rem;
+                color: var(--text2);
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+              "
+            >
+              <i class="fas fa-undo" style="color: var(--gold)"></i> Free
+              revision guarantee
+            </p>
+            <p
+              style="
+                font-size: 0.82rem;
+                color: var(--text2);
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+              "
+            >
+              <i class="fas fa-shield-alt" style="color: var(--gold)"></i>
+              Secure packaging
+            </p>
+            <p
+              style="
+                font-size: 0.82rem;
+                color: var(--text2);
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+              "
+            >
+              <i class="fas fa-truck" style="color: var(--gold)"></i> Delivered
+              in 7–10 days
+            </p>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div id="toast-container"></div>
-  <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
-  <script src="script.js"></script>
-  <script>
-    let upiConfirmed = false;
+    <!-- UPI Popup -->
+    <div class="modal-overlay" id="upi-modal">
+      <div class="modal-box" style="max-width: 440px">
+        <button class="modal-close" onclick="closeUpiPopup()">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="upi-popup-box">
+          <div class="section-tag">Secure Payment</div>
+          <h3
+            style="
+              font-family: var(--font-serif);
+              font-size: 1.4rem;
+              color: var(--cream);
+              margin-bottom: 0.5rem;
+            "
+          >
+            Pay via UPI / QR
+          </h3>
+          <div class="qr-placeholder">
+            <i
+              class="fas fa-qrcode"
+              style="font-size: 3rem; color: var(--gold)"
+            ></i>
+            <span>QR Code</span>
+            <span style="font-size: 0.7rem">Scan to pay</span>
+          </div>
+          <div
+            style="
+              background: var(--bg3);
+              border: 1px solid var(--border);
+              border-radius: var(--radius2);
+              padding: 0.85rem;
+              margin-bottom: 1rem;
+            "
+          >
+            <p
+              style="
+                font-size: 0.72rem;
+                color: var(--text3);
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                margin-bottom: 0.3rem;
+              "
+            >
+              UPI ID
+            </p>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+              "
+            >
+              <code
+                id="upi-id-text"
+                style="
+                  color: var(--gold);
+                  font-size: 0.95rem;
+                  letter-spacing: 0.05em;
+                "
+                >artcraft@upi</code
+              >
+              <button
+                onclick="copyUpiId()"
+                style="
+                  font-size: 0.75rem;
+                  color: var(--text2);
+                  background: none;
+                  border: 1px solid var(--border);
+                  border-radius: 4px;
+                  padding: 3px 8px;
+                  cursor: pointer;
+                "
+                title="Copy"
+              >
+                <i class="fas fa-copy"></i> Copy
+              </button>
+            </div>
+          </div>
+          <div
+            class="screenshot-drop"
+            onclick="document.getElementById('screenshot-input').click()"
+          >
+            <input
+              type="file"
+              id="screenshot-input"
+              accept="image/*"
+              onchange="handleScreenshot(this)"
+            />
+            <div id="screenshot-preview">
+              <i
+                class="fas fa-cloud-upload-alt"
+                style="
+                  font-size: 1.8rem;
+                  color: var(--gold);
+                  margin-bottom: 0.5rem;
+                  display: block;
+                "
+              ></i>
+              <p style="font-size: 0.85rem; color: var(--text2)">
+                Upload Payment Screenshot
+              </p>
+              <p
+                style="
+                  font-size: 0.72rem;
+                  color: var(--text3);
+                  margin-top: 0.25rem;
+                "
+              >
+                Click to browse or drag & drop
+              </p>
+            </div>
+          </div>
+          <button
+            onclick="confirmUpiPayment()"
+            class="btn btn-gold"
+            style="
+              width: 100%;
+              justify-content: center;
+              margin-top: 1.25rem;
+              padding: 0.85rem;
+            "
+          >
+            <i class="fas fa-check-circle"></i> Confirm Payment Done
+          </button>
+          <p
+            style="font-size: 0.75rem; color: var(--text3); margin-top: 0.75rem"
+          >
+            After confirming, proceed to Place Order
+          </p>
+        </div>
+      </div>
+    </div>
 
-    function selectPayment(method, el) {
-      document.querySelectorAll('.payment-option').forEach(o => { o.classList.remove('selected'); o.querySelector('input').checked = false; });
-      el.classList.add('selected');
-      el.querySelector('input').checked = true;
-      document.getElementById('cod-notice').style.display  = method === 'cod' ? 'block' : 'none';
-      document.getElementById('upi-notice').style.display  = method === 'upi' ? 'flex' : 'none';
-      document.getElementById('upi-pay-btn').style.display = method === 'upi' ? 'flex' : 'none';
-    }
+    <div id="toast-container"></div>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+      let upiConfirmed = false;
 
-    function openUpiPopup() {
-      document.getElementById('upi-modal').classList.add('open');
-    }
-    function closeUpiPopup() {
-      document.getElementById('upi-modal').classList.remove('open');
-    }
-    document.getElementById('upi-modal').addEventListener('click', function(e) {
-      if (e.target === this) closeUpiPopup();
-    });
+      function selectPayment(method, el) {
+        document.querySelectorAll(".payment-option").forEach((o) => {
+          o.classList.remove("selected");
+          o.querySelector("input").checked = false;
+        });
+        el.classList.add("selected");
+        el.querySelector("input").checked = true;
+        document.getElementById("cod-notice").style.display =
+          method === "cod" ? "block" : "none";
+        document.getElementById("upi-notice").style.display =
+          method === "upi" ? "flex" : "none";
+        document.getElementById("upi-pay-btn").style.display =
+          method === "upi" ? "flex" : "none";
+      }
 
-    function copyUpiId() {
-      navigator.clipboard.writeText('artcraft@upi').then(() => showToast('UPI ID copied!', 'success'));
-    }
+      function openUpiPopup() {
+        document.getElementById("upi-modal").classList.add("open");
+      }
+      function closeUpiPopup() {
+        document.getElementById("upi-modal").classList.remove("open");
+      }
+      document
+        .getElementById("upi-modal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeUpiPopup();
+        });
 
-    function handleScreenshot(inp) {
-      const file = inp.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = e => {
-        document.getElementById('screenshot-preview').innerHTML = `
+      function copyUpiId() {
+        navigator.clipboard
+          .writeText("artcraft@upi")
+          .then(() => showToast("UPI ID copied!", "success"));
+      }
+
+      function handleScreenshot(inp) {
+        const file = inp.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          document.getElementById("screenshot-preview").innerHTML = `
           <img src="${e.target.result}" style="max-height:120px;border-radius:8px;margin:0 auto">
           <p style="font-size:0.75rem;color:#4caf50;margin-top:0.5rem"><i class="fas fa-check"></i> Screenshot uploaded</p>`;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function confirmUpiPayment() {
-      upiConfirmed = true;
-      closeUpiPopup();
-      showToast('<i class="fas fa-check-circle"></i> Payment confirmed! Now place your order.', 'success', 5000);
-      document.getElementById('upi-pay-btn').innerHTML = '<i class="fas fa-check-circle" style="color:#4caf50"></i> UPI Payment Confirmed';
-      document.getElementById('upi-pay-btn').style.borderColor = '#4caf50';
-      document.getElementById('upi-pay-btn').style.color = '#4caf50';
-    }
-
-    // Populate summary
-    (function() {
-      const cart = getCart();
-      const { subtotal, discount, shipping, total } = calcOrderTotals(cart);
-      document.getElementById('co-subtotal').textContent = '₹' + subtotal.toLocaleString();
-      document.getElementById('co-shipping').textContent = shipping === 0 ? 'FREE' : '₹' + shipping;
-      document.getElementById('co-total').textContent    = '₹' + total.toLocaleString();
-      if (discount > 0) {
-        document.getElementById('co-discount').textContent = '-₹' + discount.toLocaleString();
-      } else {
-        document.getElementById('co-discount-row').style.display = 'none';
+        };
+        reader.readAsDataURL(file);
       }
-      const el = document.getElementById('order-summary-items');
-      if (!cart.length) { el.innerHTML = '<p style="color:var(--text3);font-size:0.85rem">Cart is empty</p>'; return; }
-      el.innerHTML = cart.map(i => `
+
+      function confirmUpiPayment() {
+        upiConfirmed = true;
+        closeUpiPopup();
+        showToast(
+          '<i class="fas fa-check-circle"></i> Payment confirmed! Now place your order.',
+          "success",
+          5000,
+        );
+        document.getElementById("upi-pay-btn").innerHTML =
+          '<i class="fas fa-check-circle" style="color:#4caf50"></i> UPI Payment Confirmed';
+        document.getElementById("upi-pay-btn").style.borderColor = "#4caf50";
+        document.getElementById("upi-pay-btn").style.color = "#4caf50";
+      }
+
+      // Populate summary
+      (function () {
+        const cart = getCart();
+        const { subtotal, discount, shipping, total } = calcOrderTotals(cart);
+        document.getElementById("co-subtotal").textContent =
+          "₹" + subtotal.toLocaleString();
+        document.getElementById("co-shipping").textContent =
+          shipping === 0 ? "FREE" : "₹" + shipping;
+        document.getElementById("co-total").textContent =
+          "₹" + total.toLocaleString();
+        if (discount > 0) {
+          document.getElementById("co-discount").textContent =
+            "-₹" + discount.toLocaleString();
+        } else {
+          document.getElementById("co-discount-row").style.display = "none";
+        }
+        const el = document.getElementById("order-summary-items");
+        if (!cart.length) {
+          el.innerHTML =
+            '<p style="color:var(--text3);font-size:0.85rem">Cart is empty</p>';
+          return;
+        }
+        el.innerHTML = cart
+          .map(
+            (i) => `
         <div style="display:flex;gap:0.75rem;margin-bottom:0.75rem;align-items:center">
           <img src="${i.image}" style="width:48px;height:58px;object-fit:cover;border-radius:6px;border:1px solid var(--border2)" alt="">
-          <div style="flex:1"><p style="font-size:0.82rem;color:var(--cream)">${i.name}</p><p style="font-size:0.72rem;color:var(--text3)">Qty: ${i.qty} ${i.size ? '· '+i.size : ''}</p></div>
-          <span style="color:var(--gold);font-weight:600;font-size:0.88rem">₹${(i.price*i.qty).toLocaleString()}</span>
-        </div>`).join('');
-    })();
+          <div style="flex:1"><p style="font-size:0.82rem;color:var(--cream)">${i.name}</p><p style="font-size:0.72rem;color:var(--text3)">Qty: ${i.qty} ${i.size ? "· " + i.size : ""}</p></div>
+          <span style="color:var(--gold);font-weight:600;font-size:0.88rem">₹${(i.price * i.qty).toLocaleString()}</span>
+        </div>`,
+          )
+          .join("");
+      })();
 
-    document.getElementById('checkout-form').addEventListener('submit', e => {
-      e.preventDefault();
-      const payMethod = document.querySelector('input[name="payment"]:checked').value;
-      if (payMethod === 'upi' && !upiConfirmed) {
-        showToast('Please complete UPI payment and upload screenshot first.', 'error');
-        openUpiPopup(); return;
-      }
-      localStorage.removeItem('artcraft_cart');
-      window.location.href = 'order-success.html';
-    });
-  </script>
-</body>
+      document
+        .getElementById("checkout-form")
+        .addEventListener("submit", (e) => {
+          e.preventDefault();
+          const payMethod = document.querySelector(
+            'input[name="payment"]:checked',
+          ).value;
+          if (payMethod === "upi" && !upiConfirmed) {
+            showToast(
+              "Please complete UPI payment and upload screenshot first.",
+              "error",
+            );
+            openUpiPopup();
+            return;
+          }
+          localStorage.removeItem("artcraft_cart");
+          window.location.href = "order-success.html";
+        });
+    </script>
+  </body>
 </html>

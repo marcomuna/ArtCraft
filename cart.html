@@ -1,90 +1,197 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cart — ArtCraft</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <style>
-    .cart-layout { display:grid; grid-template-columns:1fr 360px; gap:2.5rem; max-width:1200px; margin:0 auto; padding:3rem 5%; }
-    .summary-card { position:sticky; top:calc(var(--nav-h) + 1.5rem); height:max-content; background:var(--bg2); border:1px solid var(--border2); border-radius:var(--radius); padding:1.8rem; }
-    .summary-row { display:flex; justify-content:space-between; padding:0.6rem 0; border-bottom:1px solid var(--border2); font-size:0.88rem; color:var(--text2); }
-    .summary-row.total { border-bottom:none; font-size:1.1rem; font-weight:600; color:var(--gold); padding-top:1rem; }
-    @media(max-width:900px){ .cart-layout{grid-template-columns:1fr;} .summary-card{position:static;} }
-  </style>
-</head>
-<body>
-  <div id="loading-screen"><div class="loading-logo">ArtCraft</div><div class="loading-bar"><div class="loading-bar-inner"></div></div></div>
-  <div class="cursor-dot"></div><div class="cursor-ring"></div>
-  <div id="scroll-bar"></div>
-
-  <nav class="navbar scrolled">
-    <div class="nav-inner">
-      <a href="index.html" class="nav-logo">ArtCraft</a>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="shop.html">Shop</a></li>
-        <li><a href="custom-order.html">Custom Order</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-      <div class="nav-actions">
-        <a href="wishlist.html" class="nav-icon-btn"><i class="fas fa-heart"></i><span class="cart-count wish-count"></span></a>
-        <a href="cart.html" class="nav-icon-btn"><i class="fas fa-shopping-bag"></i><span class="cart-count"></span></a>
-        <div class="user-nav-btn"></div>
-        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
-      </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart — ArtCraft</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      .cart-layout {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 2.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 3rem 5%;
+      }
+      .summary-card {
+        position: sticky;
+        top: calc(var(--nav-h) + 1.5rem);
+        height: max-content;
+        background: var(--bg2);
+        border: 1px solid var(--border2);
+        border-radius: var(--radius);
+        padding: 1.8rem;
+      }
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.6rem 0;
+        border-bottom: 1px solid var(--border2);
+        font-size: 0.88rem;
+        color: var(--text2);
+      }
+      .summary-row.total {
+        border-bottom: none;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--gold);
+        padding-top: 1rem;
+      }
+      @media (max-width: 900px) {
+        .cart-layout {
+          grid-template-columns: 1fr;
+        }
+        .summary-card {
+          position: static;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loading-screen">
+      <div class="loading-logo">ArtCraft</div>
+      <div class="loading-bar"><div class="loading-bar-inner"></div></div>
     </div>
-  </nav>
-  <div class="mobile-nav" id="mobile-nav">
-    <a href="index.html">Home</a>
-    <a href="shop.html">Shop</a>
-    <a href="custom-order.html">Custom Order</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-    <a href="auth.html">My Account</a>
-  </div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+    <div id="scroll-bar"></div>
 
-  <div class="page-header">
-    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Cart</span></div>
-    <h1 class="section-title">Your <em>Cart</em></h1>
-  </div>
+    <nav class="navbar scrolled">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">ArtCraft</a>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="shop.html">Shop</a></li>
+          <li><a href="custom-order.html">Custom Order</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+          <a href="wishlist.html" class="nav-icon-btn"
+            ><i class="fas fa-heart"></i
+            ><span class="cart-count wish-count"></span
+          ></a>
+          <a href="cart.html" class="nav-icon-btn"
+            ><i class="fas fa-shopping-bag"></i><span class="cart-count"></span
+          ></a>
+          <div class="user-nav-btn"></div>
+          <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="mobile-nav" id="mobile-nav">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="custom-order.html">Custom Order</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="auth.html">My Account</a>
+    </div>
 
-  <div class="cart-layout">
-    <div>
-      <div id="cart-items"></div>
-      <div class="glow-card" style="padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;margin-top:1rem">
-        <i class="fas fa-truck" style="color:var(--gold);font-size:1.2rem;flex-shrink:0"></i>
-        <p style="font-size:0.85rem;color:var(--text2)">
-          Free shipping on orders above <strong style="color:var(--cream)">₹3,000</strong>.
-          Orders below ₹3,000 attract a flat <strong style="color:var(--cream)">₹80</strong> shipping fee.
-          <span style="color:var(--gold)">Orders above ₹5,000 get 20% off!</span>
+    <div class="page-header">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a><span>/</span><span>Cart</span>
+      </div>
+      <h1 class="section-title">Your <em>Cart</em></h1>
+    </div>
+
+    <div class="cart-layout">
+      <div>
+        <div id="cart-items"></div>
+        <div
+          class="glow-card"
+          style="
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+          "
+        >
+          <i
+            class="fas fa-truck"
+            style="color: var(--gold); font-size: 1.2rem; flex-shrink: 0"
+          ></i>
+          <p style="font-size: 0.85rem; color: var(--text2)">
+            Free shipping on orders above
+            <strong style="color: var(--cream)">₹3,000</strong>. Orders below
+            ₹3,000 attract a flat
+            <strong style="color: var(--cream)">₹80</strong> shipping fee.
+            <span style="color: var(--gold)"
+              >Orders above ₹5,000 get 20% off!</span
+            >
+          </p>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="summary-card">
+        <h3
+          style="
+            font-family: var(--font-serif);
+            color: var(--cream);
+            font-size: 1.2rem;
+            margin-bottom: 1.25rem;
+          "
+        >
+          Order Summary
+        </h3>
+        <div class="summary-row">
+          <span>Subtotal</span><span id="summary-subtotal">₹0</span>
+        </div>
+        <div class="summary-row">
+          <span>Discount (20%)</span
+          ><span id="summary-discount" style="color: #4caf50">—</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span><span id="summary-shipping">—</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total</span><span id="summary-total">₹0</span>
+        </div>
+
+        <button
+          class="btn btn-gold"
+          id="checkout-btn"
+          style="
+            width: 100%;
+            justify-content: center;
+            margin-top: 1.25rem;
+            padding: 0.9rem;
+          "
+        >
+          <i class="fas fa-lock"></i> Proceed to Checkout
+        </button>
+        <a
+          href="shop.html"
+          class="btn btn-ghost"
+          style="width: 100%; justify-content: center; margin-top: 0.75rem"
+        >
+          <i class="fas fa-arrow-left"></i> Continue Shopping
+        </a>
+        <p
+          style="
+            text-align: center;
+            font-size: 0.72rem;
+            color: var(--text3);
+            margin-top: 1rem;
+          "
+        >
+          <i class="fas fa-lock"></i> 100% Secure Checkout
         </p>
       </div>
     </div>
 
-    <!-- Order Summary -->
-    <div class="summary-card">
-      <h3 style="font-family:var(--font-serif);color:var(--cream);font-size:1.2rem;margin-bottom:1.25rem">Order Summary</h3>
-      <div class="summary-row"><span>Subtotal</span><span id="summary-subtotal">₹0</span></div>
-      <div class="summary-row"><span>Discount (20%)</span><span id="summary-discount" style="color:#4caf50">—</span></div>
-      <div class="summary-row"><span>Shipping</span><span id="summary-shipping">—</span></div>
-      <div class="summary-row total"><span>Total</span><span id="summary-total">₹0</span></div>
-
-      <button class="btn btn-gold" id="checkout-btn" style="width:100%;justify-content:center;margin-top:1.25rem;padding:0.9rem">
-        <i class="fas fa-lock"></i> Proceed to Checkout
-      </button>
-      <a href="shop.html" class="btn btn-ghost" style="width:100%;justify-content:center;margin-top:0.75rem">
-        <i class="fas fa-arrow-left"></i> Continue Shopping
-      </a>
-      <p style="text-align:center;font-size:0.72rem;color:var(--text3);margin-top:1rem"><i class="fas fa-lock"></i> 100% Secure Checkout</p>
-    </div>
-  </div>
-
-  <div id="toast-container"></div>
-  <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
-  <script src="script.js"></script>
-</body>
+    <div id="toast-container"></div>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
+    <script src="script.js"></script>
+  </body>
 </html>

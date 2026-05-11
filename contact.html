@@ -1,221 +1,551 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact — ArtCraft</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <style>
-    .contact-layout { display:grid; grid-template-columns:1fr 1.4fr; gap:4rem; max-width:1200px; margin:0 auto; padding:3rem 5%; }
-    .contact-info-item { display:flex; align-items:flex-start; gap:1.2rem; margin-bottom:2rem; }
-    .contact-icon { width:48px; height:48px; border-radius:50%; background:rgba(201,169,110,0.1); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:1.1rem; flex-shrink:0; }
-    .contact-info-title { font-size:0.78rem; text-transform:uppercase; letter-spacing:0.12em; color:var(--text3); margin-bottom:0.3rem; }
-    .contact-info-val { color:var(--cream); font-size:0.95rem; }
-    .contact-info-val a { color:var(--text2); transition:color 0.2s; }
-    .contact-info-val a:hover { color:var(--gold); }
-    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; }
-    .form-grid .full { grid-column:1/-1; }
-    .map-wrap { border-radius:var(--radius); overflow:hidden; border:1px solid var(--border2); height:360px; }
-    .map-wrap iframe { width:100%; height:100%; border:0; filter:grayscale(30%) invert(10%); }
-    @media(max-width:900px){ .contact-layout{grid-template-columns:1fr;gap:2rem;} .form-grid{grid-template-columns:1fr;} }
-  </style>
-</head>
-<body>
-  <div id="loading-screen"><div class="loading-logo">ArtCraft</div><div class="loading-bar"><div class="loading-bar-inner"></div></div></div>
-  <div class="cursor-dot"></div><div class="cursor-ring"></div>
-  <div id="scroll-bar"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact — ArtCraft</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      .contact-layout {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 4rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 3rem 5%;
+      }
+      .contact-info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.2rem;
+        margin-bottom: 2rem;
+      }
+      .contact-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: rgba(201, 169, 110, 0.1);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+        font-size: 1.1rem;
+        flex-shrink: 0;
+      }
+      .contact-info-title {
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--text3);
+        margin-bottom: 0.3rem;
+      }
+      .contact-info-val {
+        color: var(--cream);
+        font-size: 0.95rem;
+      }
+      .contact-info-val a {
+        color: var(--text2);
+        transition: color 0.2s;
+      }
+      .contact-info-val a:hover {
+        color: var(--gold);
+      }
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+      }
+      .form-grid .full {
+        grid-column: 1/-1;
+      }
+      .map-wrap {
+        border-radius: var(--radius);
+        overflow: hidden;
+        border: 1px solid var(--border2);
+        height: 360px;
+      }
+      .map-wrap iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        filter: grayscale(30%) invert(10%);
+      }
+      @media (max-width: 900px) {
+        .contact-layout {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loading-screen">
+      <div class="loading-logo">ArtCraft</div>
+      <div class="loading-bar"><div class="loading-bar-inner"></div></div>
+    </div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+    <div id="scroll-bar"></div>
 
-  <nav class="navbar scrolled">
-    <div class="nav-inner">
-      <a href="index.html" class="nav-logo">ArtCraft</a>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="shop.html">Shop</a></li>
-        <li><a href="custom-order.html">Custom Order</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-      <div class="nav-actions">
-        <a href="wishlist.html" class="nav-icon-btn"><i class="fas fa-heart"></i><span class="cart-count wish-count"></span></a>
-        <a href="cart.html" class="nav-icon-btn"><i class="fas fa-shopping-bag"></i><span class="cart-count"></span></a>
-        <div class="user-nav-btn"></div>
-        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <nav class="navbar scrolled">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">ArtCraft</a>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="shop.html">Shop</a></li>
+          <li><a href="custom-order.html">Custom Order</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+          <a href="wishlist.html" class="nav-icon-btn"
+            ><i class="fas fa-heart"></i
+            ><span class="cart-count wish-count"></span
+          ></a>
+          <a href="cart.html" class="nav-icon-btn"
+            ><i class="fas fa-shopping-bag"></i><span class="cart-count"></span
+          ></a>
+          <div class="user-nav-btn"></div>
+          <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="mobile-nav" id="mobile-nav">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="custom-order.html">Custom Order</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="auth.html">My Account</a>
+    </div>
+
+    <div class="page-header">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a><span>/</span><span>Contact</span>
+      </div>
+      <h1 class="section-title">Let's <em>Connect</em></h1>
+      <p style="color: var(--text2); font-size: 0.9rem; margin-top: 0.5rem">
+        We'd love to hear from you
+      </p>
+    </div>
+
+    <div class="contact-layout">
+      <!-- Left Info -->
+      <div data-aos="fade-right">
+        <div class="section-tag">Get In Touch</div>
+        <h2
+          class="section-title"
+          style="font-size: 2rem; margin: 0.5rem 0 1rem"
+        >
+          We're Always<br />Here for <em>You</em>
+        </h2>
+        <div class="gold-divider"></div>
+        <p
+          style="
+            color: var(--text2);
+            font-size: 0.9rem;
+            line-height: 1.9;
+            margin: 1.5rem 0 2.5rem;
+          "
+        >
+          Whether you have a question about an order, want to discuss a custom
+          project, or just want to say hello — fill out the form or reach us
+          directly.
+        </p>
+
+        <div class="contact-info-item">
+          <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+          <div>
+            <p class="contact-info-title">Email</p>
+            <p class="contact-info-val">
+              <a href="mailto:blacksdevil2004@gmail.com"
+                >blacksdevil2004@gmail.com</a
+              >
+            </p>
+            <p
+              style="
+                font-size: 0.78rem;
+                color: var(--text3);
+                margin-top: 0.2rem;
+              "
+            >
+              We reply within 24 hours
+            </p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+          <div>
+            <p class="contact-info-title">WhatsApp</p>
+            <p class="contact-info-val">
+              <a href="https://wa.me/919040405798">+91 90404 05798</a>
+            </p>
+            <p
+              style="
+                font-size: 0.78rem;
+                color: var(--text3);
+                margin-top: 0.2rem;
+              "
+            >
+              Always available
+            </p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div>
+            <p class="contact-info-title">Studio Location</p>
+            <p class="contact-info-val">Rayagada, Odisha, India — 765001</p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon"><i class="fas fa-clock"></i></div>
+          <div>
+            <p class="contact-info-title">Working Hours</p>
+            <p
+              class="contact-info-val"
+              style="color: #4caf50; font-weight: 500"
+            >
+              Always Open
+              <i
+                class="fas fa-circle"
+                style="
+                  font-size: 0.5rem;
+                  vertical-align: middle;
+                  margin-left: 4px;
+                "
+              ></i>
+            </p>
+            <p
+              style="
+                font-size: 0.78rem;
+                color: var(--text3);
+                margin-top: 0.2rem;
+              "
+            >
+              7 days a week, 24 hours
+            </p>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem">
+          <p
+            style="
+              font-size: 0.78rem;
+              text-transform: uppercase;
+              letter-spacing: 0.12em;
+              color: var(--gold);
+              margin-bottom: 1rem;
+            "
+          >
+            Follow Us
+          </p>
+          <div class="footer-social">
+            <a
+              href="https://www.instagram.com"
+              target="_blank"
+              title="Instagram"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://wa.me/919040405798" title="WhatsApp"
+              ><i class="fab fa-whatsapp"></i
+            ></a>
+            <a href="#" title="Pinterest"><i class="fab fa-pinterest"></i></a>
+          </div>
+        </div>
+
+        <a
+          href="https://wa.me/919040405798?text=Hi%20ArtCraft%2C%20I%20wanted%20to%20enquire%20about%20a%20custom%20order"
+          class="btn btn-gold"
+          style="margin-top: 2rem; display: inline-flex"
+        >
+          <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+        </a>
+      </div>
+
+      <!-- Contact Form -->
+      <div data-aos="fade-left">
+        <div class="glow-card" style="padding: 2.5rem">
+          <h3
+            style="
+              font-family: var(--font-serif);
+              color: var(--cream);
+              font-size: 1.4rem;
+              margin-bottom: 1.5rem;
+            "
+          >
+            Send us a Message
+          </h3>
+          <form id="contact-form">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label"
+                  >First Name <span style="color: #e05">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-input"
+                  placeholder="Monu"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label"
+                  >Last Name <span style="color: #e05">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-input"
+                  placeholder="Sharma"
+                  required
+                />
+              </div>
+              <div class="form-group full">
+                <label class="form-label"
+                  >Email Address <span style="color: #e05">*</span></label
+                >
+                <input
+                  type="email"
+                  class="form-input"
+                  placeholder="monu@example.com"
+                  required
+                />
+              </div>
+              <div class="form-group full">
+                <label class="form-label">Phone Number</label>
+                <input
+                  type="tel"
+                  class="form-input"
+                  placeholder="+91 98765 43210"
+                />
+              </div>
+              <div class="form-group full">
+                <label class="form-label"
+                  >Subject <span style="color: #e05">*</span></label
+                >
+                <select class="form-select" required>
+                  <option value="">Select a topic</option>
+                  <option>Custom Order Enquiry</option>
+                  <option>Order Status</option>
+                  <option>Product Question</option>
+                  <option>Collaboration</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group full">
+                <label class="form-label"
+                  >Message <span style="color: #e05">*</span></label
+                >
+                <textarea
+                  class="form-textarea"
+                  rows="5"
+                  placeholder="Tell us what's on your mind..."
+                  required
+                ></textarea>
+              </div>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-gold"
+              style="
+                width: 100%;
+                justify-content: center;
+                margin-top: 1rem;
+                padding: 0.9rem;
+              "
+            >
+              <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+          </form>
+        </div>
       </div>
     </div>
-  </nav>
-  <div class="mobile-nav" id="mobile-nav">
-    <a href="index.html">Home</a>
-    <a href="shop.html">Shop</a>
-    <a href="custom-order.html">Custom Order</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-    <a href="auth.html">My Account</a>
-  </div>
 
-  <div class="page-header">
-    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Contact</span></div>
-    <h1 class="section-title">Let's <em>Connect</em></h1>
-    <p style="color:var(--text2);font-size:0.9rem;margin-top:0.5rem">We'd love to hear from you</p>
-  </div>
-
-  <div class="contact-layout">
-    <!-- Left Info -->
-    <div data-aos="fade-right">
-      <div class="section-tag">Get In Touch</div>
-      <h2 class="section-title" style="font-size:2rem;margin:0.5rem 0 1rem">We're Always<br>Here for <em>You</em></h2>
-      <div class="gold-divider"></div>
-      <p style="color:var(--text2);font-size:0.9rem;line-height:1.9;margin:1.5rem 0 2.5rem">Whether you have a question about an order, want to discuss a custom project, or just want to say hello — fill out the form or reach us directly.</p>
-
-      <div class="contact-info-item">
-        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-        <div>
-          <p class="contact-info-title">Email</p>
-          <p class="contact-info-val"><a href="mailto:blacksdevil2004@gmail.com">blacksdevil2004@gmail.com</a></p>
-          <p style="font-size:0.78rem;color:var(--text3);margin-top:0.2rem">We reply within 24 hours</p>
-        </div>
+    <!-- Map -->
+    <div
+      style="padding: 0 5% 5rem; max-width: 1200px; margin: 0 auto"
+      data-aos="fade-up"
+    >
+      <p
+        style="
+          font-size: 0.72rem;
+          text-transform: uppercase;
+          letter-spacing: 0.15em;
+          color: var(--gold);
+          margin-bottom: 1rem;
+        "
+      >
+        <i class="fas fa-map-marker-alt"></i> Rayagada, Odisha
+      </p>
+      <div class="map-wrap">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7467.3!2d83.40814!3d19.16048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a21c9d5d6f72885%3A0x3e5b8e7f1234abcd!2sRayagada%2C%20Odisha%20765001!5e0!3m2!1sen!2sin!4v1699000000000"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="ArtCraft Studio Location"
+        >
+        </iframe>
       </div>
-      <div class="contact-info-item">
-        <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
-        <div>
-          <p class="contact-info-title">WhatsApp</p>
-          <p class="contact-info-val"><a href="https://wa.me/919040405798">+91 90404 05798</a></p>
-          <p style="font-size:0.78rem;color:var(--text3);margin-top:0.2rem">Always available</p>
-        </div>
+      <div style="text-align: center; margin-top: 1rem">
+        <a
+          href="https://www.google.com/maps?q=19.16048,83.41714"
+          target="_blank"
+          class="btn btn-outline btn-sm"
+          ><i class="fas fa-directions"></i> Open in Google Maps</a
+        >
       </div>
-      <div class="contact-info-item">
-        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-        <div>
-          <p class="contact-info-title">Studio Location</p>
-          <p class="contact-info-val">Rayagada, Odisha, India — 765001</p>
-        </div>
-      </div>
-      <div class="contact-info-item">
-        <div class="contact-icon"><i class="fas fa-clock"></i></div>
-        <div>
-          <p class="contact-info-title">Working Hours</p>
-          <p class="contact-info-val" style="color:#4caf50;font-weight:500">Always Open <i class="fas fa-circle" style="font-size:0.5rem;vertical-align:middle;margin-left:4px"></i></p>
-          <p style="font-size:0.78rem;color:var(--text3);margin-top:0.2rem">7 days a week, 24 hours</p>
-        </div>
-      </div>
-
-      <div style="margin-top:2rem">
-        <p style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold);margin-bottom:1rem">Follow Us</p>
-        <div class="footer-social">
-          <a href="https://www.instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
-          <a href="https://wa.me/919040405798" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-          <a href="#" title="Pinterest"><i class="fab fa-pinterest"></i></a>
-        </div>
-      </div>
-
-      <a href="https://wa.me/919040405798?text=Hi%20ArtCraft%2C%20I%20wanted%20to%20enquire%20about%20a%20custom%20order"
-         class="btn btn-gold" style="margin-top:2rem;display:inline-flex">
-        <i class="fab fa-whatsapp"></i> Chat on WhatsApp
-      </a>
     </div>
 
-    <!-- Contact Form -->
-    <div data-aos="fade-left">
-      <div class="glow-card" style="padding:2.5rem">
-        <h3 style="font-family:var(--font-serif);color:var(--cream);font-size:1.4rem;margin-bottom:1.5rem">Send us a Message</h3>
-        <form id="contact-form">
-          <div class="form-grid">
-            <div class="form-group">
-              <label class="form-label">First Name <span style="color:#e05">*</span></label>
-              <input type="text" class="form-input" placeholder="Monu" required>
+    <!-- FAQ -->
+    <div class="section-bg" style="padding: 5rem 5%">
+      <div style="max-width: 700px; margin: 0 auto">
+        <div class="section-header center" data-aos="fade-up">
+          <div class="section-tag">FAQ</div>
+          <h2 class="section-title" style="font-size: 2rem">
+            Quick <em>Answers</em>
+          </h2>
+          <div class="gold-divider"></div>
+        </div>
+        <div data-aos="fade-up">
+          <div class="accordion-item">
+            <div class="accordion-header">
+              How do I track my order?
+              <div class="accordion-icon"><i class="fas fa-plus"></i></div>
             </div>
-            <div class="form-group">
-              <label class="form-label">Last Name <span style="color:#e05">*</span></label>
-              <input type="text" class="form-input" placeholder="Sharma" required>
-            </div>
-            <div class="form-group full">
-              <label class="form-label">Email Address <span style="color:#e05">*</span></label>
-              <input type="email" class="form-input" placeholder="monu@example.com" required>
-            </div>
-            <div class="form-group full">
-              <label class="form-label">Phone Number</label>
-              <input type="tel" class="form-input" placeholder="+91 98765 43210">
-            </div>
-            <div class="form-group full">
-              <label class="form-label">Subject <span style="color:#e05">*</span></label>
-              <select class="form-select" required>
-                <option value="">Select a topic</option>
-                <option>Custom Order Enquiry</option>
-                <option>Order Status</option>
-                <option>Product Question</option>
-                <option>Collaboration</option>
-                <option>Other</option>
-              </select>
-            </div>
-            <div class="form-group full">
-              <label class="form-label">Message <span style="color:#e05">*</span></label>
-              <textarea class="form-textarea" rows="5" placeholder="Tell us what's on your mind..." required></textarea>
+            <div class="accordion-body">
+              <div class="accordion-body-inner">
+                Once your order is shipped, we'll send a tracking link via
+                WhatsApp and email. You can also reach out to us directly for
+                updates.
+              </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-gold" style="width:100%;justify-content:center;margin-top:1rem;padding:0.9rem">
-            <i class="fas fa-paper-plane"></i> Send Message
-          </button>
-        </form>
+          <div class="accordion-item">
+            <div class="accordion-header">
+              Can I cancel my custom order?
+              <div class="accordion-icon"><i class="fas fa-plus"></i></div>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-body-inner">
+                Custom orders can be cancelled within 24 hours of placing. After
+                artwork has begun, cancellations are not possible but we offer
+                free revision.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-header">
+              Do you ship internationally?
+              <div class="accordion-icon"><i class="fas fa-plus"></i></div>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-body-inner">
+                Currently we ship Pan India. International shipping is available
+                on request with additional charges. Contact us to discuss.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-header">
+              What payment methods do you accept?
+              <div class="accordion-icon"><i class="fas fa-plus"></i></div>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-body-inner">
+                We accept UPI/QR Code payments and Cash on Delivery. All UPI
+                payments are secure and instant.
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Map -->
-  <div style="padding:0 5% 5rem;max-width:1200px;margin:0 auto" data-aos="fade-up">
-    <p style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--gold);margin-bottom:1rem"><i class="fas fa-map-marker-alt"></i> Rayagada, Odisha</p>
-    <div class="map-wrap">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7467.3!2d83.40814!3d19.16048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a21c9d5d6f72885%3A0x3e5b8e7f1234abcd!2sRayagada%2C%20Odisha%20765001!5e0!3m2!1sen!2sin!4v1699000000000"
-        allowfullscreen
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-        title="ArtCraft Studio Location">
-      </iframe>
-    </div>
-    <div style="text-align:center;margin-top:1rem">
-      <a href="https://www.google.com/maps?q=19.16048,83.41714" target="_blank" class="btn btn-outline btn-sm"><i class="fas fa-directions"></i> Open in Google Maps</a>
-    </div>
-  </div>
-
-  <!-- FAQ -->
-  <div class="section-bg" style="padding:5rem 5%">
-    <div style="max-width:700px;margin:0 auto">
-      <div class="section-header center" data-aos="fade-up">
-        <div class="section-tag">FAQ</div>
-        <h2 class="section-title" style="font-size:2rem">Quick <em>Answers</em></h2>
-        <div class="gold-divider"></div>
+    <footer class="footer">
+      <div class="footer-grid">
+        <div>
+          <a href="index.html" class="footer-logo">ArtCraft</a>
+          <p class="footer-desc">Handcrafted art for every occasion.</p>
+          <div class="footer-social">
+            <a href="https://www.instagram.com" target="_blank"
+              ><i class="fab fa-instagram"></i></a
+            ><a href="#"><i class="fab fa-facebook-f"></i></a
+            ><a href="https://wa.me/919040405798"
+              ><i class="fab fa-whatsapp"></i
+            ></a>
+          </div>
+        </div>
+        <div>
+          <p class="footer-heading">Quick Links</p>
+          <div class="footer-links">
+            <a href="index.html">Home</a><a href="shop.html">Shop</a
+            ><a href="custom-order.html">Custom Order</a
+            ><a href="about.html">About</a><a href="contact.html">Contact</a>
+          </div>
+        </div>
+        <div>
+          <p class="footer-heading">Categories</p>
+          <div class="footer-links">
+            <a href="shop.html?cat=pencil">Pencil Portraits</a
+            ><a href="shop.html?cat=mandala">Mandala Art</a
+            ><a href="shop.html?cat=lippan">Lippan Art</a>
+          </div>
+        </div>
+        <div>
+          <p class="footer-heading">Contact</p>
+          <div class="footer-links">
+            <a href="mailto:blacksdevil2004@gmail.com"
+              ><i
+                class="fas fa-envelope"
+                style="color: var(--gold); margin-right: 0.4rem"
+              ></i
+              >blacksdevil2004@gmail.com</a
+            ><a href="https://wa.me/919040405798"
+              ><i
+                class="fab fa-whatsapp"
+                style="color: var(--gold); margin-right: 0.4rem"
+              ></i
+              >+91 90404 05798</a
+            >
+          </div>
+        </div>
       </div>
-      <div data-aos="fade-up">
-        <div class="accordion-item"><div class="accordion-header">How do I track my order?<div class="accordion-icon"><i class="fas fa-plus"></i></div></div><div class="accordion-body"><div class="accordion-body-inner">Once your order is shipped, we'll send a tracking link via WhatsApp and email. You can also reach out to us directly for updates.</div></div></div>
-        <div class="accordion-item"><div class="accordion-header">Can I cancel my custom order?<div class="accordion-icon"><i class="fas fa-plus"></i></div></div><div class="accordion-body"><div class="accordion-body-inner">Custom orders can be cancelled within 24 hours of placing. After artwork has begun, cancellations are not possible but we offer free revision.</div></div></div>
-        <div class="accordion-item"><div class="accordion-header">Do you ship internationally?<div class="accordion-icon"><i class="fas fa-plus"></i></div></div><div class="accordion-body"><div class="accordion-body-inner">Currently we ship Pan India. International shipping is available on request with additional charges. Contact us to discuss.</div></div></div>
-        <div class="accordion-item"><div class="accordion-header">What payment methods do you accept?<div class="accordion-icon"><i class="fas fa-plus"></i></div></div><div class="accordion-body"><div class="accordion-body-inner">We accept UPI/QR Code payments and Cash on Delivery. All UPI payments are secure and instant.</div></div></div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 ArtCraft.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy</a><a href="#">Terms</a>
+        </div>
       </div>
-    </div>
-  </div>
+    </footer>
 
-  <footer class="footer">
-    <div class="footer-grid">
-      <div><a href="index.html" class="footer-logo">ArtCraft</a><p class="footer-desc">Handcrafted art for every occasion.</p><div class="footer-social"><a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook-f"></i></a><a href="https://wa.me/919040405798"><i class="fab fa-whatsapp"></i></a></div></div>
-      <div><p class="footer-heading">Quick Links</p><div class="footer-links"><a href="index.html">Home</a><a href="shop.html">Shop</a><a href="custom-order.html">Custom Order</a><a href="about.html">About</a><a href="contact.html">Contact</a></div></div>
-      <div><p class="footer-heading">Categories</p><div class="footer-links"><a href="shop.html?cat=pencil">Pencil Portraits</a><a href="shop.html?cat=mandala">Mandala Art</a><a href="shop.html?cat=lippan">Lippan Art</a></div></div>
-      <div><p class="footer-heading">Contact</p><div class="footer-links"><a href="mailto:blacksdevil2004@gmail.com"><i class="fas fa-envelope" style="color:var(--gold);margin-right:0.4rem"></i>blacksdevil2004@gmail.com</a><a href="https://wa.me/919040405798"><i class="fab fa-whatsapp" style="color:var(--gold);margin-right:0.4rem"></i>+91 90404 05798</a></div></div>
-    </div>
-    <div class="footer-bottom"><p>&copy; 2026 ArtCraft.</p><div class="footer-bottom-links"><a href="#">Privacy</a><a href="#">Terms</a></div></div>
-  </footer>
-
-  <div id="toast-container"></div>
-  <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
-  <script src="script.js"></script>
-  <script>
-    document.getElementById('contact-form').addEventListener('submit', e => {
-      e.preventDefault();
-      showToast('<i class="fas fa-check-circle"></i> Message sent! We\'ll reply within 24 hours.', 'success');
-      e.target.reset();
-    });
-  </script>
-</body>
+    <div id="toast-container"></div>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+      document
+        .getElementById("contact-form")
+        .addEventListener("submit", (e) => {
+          e.preventDefault();
+          showToast(
+            '<i class="fas fa-check-circle"></i> Message sent! We\'ll reply within 24 hours.',
+            "success",
+          );
+          e.target.reset();
+        });
+    </script>
+  </body>
 </html>

@@ -1,180 +1,490 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login / Signup — ArtCraft</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <style>
-    body { min-height:100vh; display:flex; flex-direction:column; }
-    .auth-wrap {
-      flex:1; display:flex; align-items:center; justify-content:center;
-      padding:calc(var(--nav-h) + 2rem) 5% 4rem;
-      position:relative; overflow:hidden;
-    }
-    .auth-bg { position:absolute; inset:0; background:radial-gradient(ellipse at 30% 50%, rgba(201,169,110,0.05) 0%, transparent 60%); }
-    .auth-container {
-      display:grid; grid-template-columns:1fr 1fr;
-      max-width:900px; width:100%;
-      background:var(--bg2); border:1px solid var(--border2);
-      border-radius:24px; overflow:hidden; position:relative; z-index:1;
-    }
-    .auth-visual { position:relative; overflow:hidden; background:linear-gradient(135deg, rgba(201,169,110,0.15), rgba(201,169,110,0.03)); }
-    .auth-visual img { width:100%; height:100%; object-fit:cover; opacity:0.4; }
-    .auth-visual-content { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; padding:2.5rem; }
-    .auth-form-panel { padding:2.5rem; }
-    .auth-tabs { display:flex; margin-bottom:2rem; border-bottom:1px solid var(--border2); }
-    .auth-tab { flex:1; padding:0.75rem; text-align:center; font-size:0.85rem; letter-spacing:0.06em; color:var(--text2); cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; margin-bottom:-1px; }
-    .auth-tab.active { color:var(--gold); border-bottom-color:var(--gold); }
-    .social-btn { display:flex; align-items:center; justify-content:center; gap:0.75rem; width:100%; padding:0.75rem; background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius2); font-size:0.85rem; color:var(--text); cursor:pointer; transition:all 0.2s; margin-bottom:0.75rem; }
-    .social-btn:hover { border-color:var(--gold); color:var(--gold); }
-    .divider { display:flex; align-items:center; gap:1rem; margin:1.25rem 0; }
-    .divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--border2); }
-    .divider span { font-size:0.75rem; color:var(--text3); white-space:nowrap; }
-    .input-wrap { position:relative; }
-    .input-wrap .form-input { padding-right:2.5rem; }
-    .input-wrap .input-icon { position:absolute; right:0.9rem; top:50%; transform:translateY(-50%); color:var(--text3); font-size:0.9rem; cursor:pointer; }
-    @media(max-width:700px){ .auth-container{grid-template-columns:1fr;} .auth-visual{display:none;} }
-  </style>
-</head>
-<body>
-  <div id="loading-screen"><div class="loading-logo">ArtCraft</div><div class="loading-bar"><div class="loading-bar-inner"></div></div></div>
-
-  <nav class="navbar scrolled">
-    <div class="nav-inner">
-      <a href="index.html" class="nav-logo">ArtCraft</a>
-      <div><a href="shop.html" class="btn btn-ghost btn-sm">Browse Shop <i class="fas fa-arrow-right"></i></a></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login / Signup — ArtCraft</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .auth-wrap {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: calc(var(--nav-h) + 2rem) 5% 4rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .auth-bg {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at 30% 50%,
+          rgba(201, 169, 110, 0.05) 0%,
+          transparent 60%
+        );
+      }
+      .auth-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        max-width: 900px;
+        width: 100%;
+        background: var(--bg2);
+        border: 1px solid var(--border2);
+        border-radius: 24px;
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+      }
+      .auth-visual {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(
+          135deg,
+          rgba(201, 169, 110, 0.15),
+          rgba(201, 169, 110, 0.03)
+        );
+      }
+      .auth-visual img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.4;
+      }
+      .auth-visual-content {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 2.5rem;
+      }
+      .auth-form-panel {
+        padding: 2.5rem;
+      }
+      .auth-tabs {
+        display: flex;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid var(--border2);
+      }
+      .auth-tab {
+        flex: 1;
+        padding: 0.75rem;
+        text-align: center;
+        font-size: 0.85rem;
+        letter-spacing: 0.06em;
+        color: var(--text2);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+        margin-bottom: -1px;
+      }
+      .auth-tab.active {
+        color: var(--gold);
+        border-bottom-color: var(--gold);
+      }
+      .social-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        width: 100%;
+        padding: 0.75rem;
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: var(--radius2);
+        font-size: 0.85rem;
+        color: var(--text);
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-bottom: 0.75rem;
+      }
+      .social-btn:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 1.25rem 0;
+      }
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border2);
+      }
+      .divider span {
+        font-size: 0.75rem;
+        color: var(--text3);
+        white-space: nowrap;
+      }
+      .input-wrap {
+        position: relative;
+      }
+      .input-wrap .form-input {
+        padding-right: 2.5rem;
+      }
+      .input-wrap .input-icon {
+        position: absolute;
+        right: 0.9rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text3);
+        font-size: 0.9rem;
+        cursor: pointer;
+      }
+      @media (max-width: 700px) {
+        .auth-container {
+          grid-template-columns: 1fr;
+        }
+        .auth-visual {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loading-screen">
+      <div class="loading-logo">ArtCraft</div>
+      <div class="loading-bar"><div class="loading-bar-inner"></div></div>
     </div>
-  </nav>
 
-  <div class="auth-wrap">
-    <div class="auth-bg"></div>
-    <div class="auth-container">
-      <div class="auth-visual">
-        <img src="https://picsum.photos/seed/auth-art/600/800" alt="ArtCraft">
-        <div class="auth-visual-content">
-          <div style="font-family:var(--font-display);font-size:2rem;color:var(--cream);line-height:1.2;margin-bottom:0.75rem">Art That<br>Moves <em style="color:var(--gold)">You</em></div>
-          <p style="font-size:0.85rem;color:rgba(240,234,214,0.7);line-height:1.8">Join our community of art lovers. Track your orders, save favourites, and get exclusive early access to new artworks.</p>
+    <nav class="navbar scrolled">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">ArtCraft</a>
+        <div>
+          <a href="shop.html" class="btn btn-ghost btn-sm"
+            >Browse Shop <i class="fas fa-arrow-right"></i
+          ></a>
         </div>
       </div>
+    </nav>
 
-      <div class="auth-form-panel">
-        <div style="margin-bottom:1.5rem">
-          <a href="index.html" style="display:inline-block;font-family:var(--font-display);font-size:1.4rem;color:var(--gold)">ArtCraft</a>
-          <p style="font-size:0.82rem;color:var(--text3);margin-top:0.2rem">Premium Handmade Art</p>
-        </div>
-
-        <div class="auth-tabs">
-          <div class="auth-tab active" onclick="showTab('login')">Login</div>
-          <div class="auth-tab" onclick="showTab('signup')">Create Account</div>
-        </div>
-
-        <!-- Login Form -->
-        <div id="login-form">
-          <div class="divider"><span>sign in with email</span></div>
-          <form onsubmit="handleLogin(event)">
-            <div class="form-group" style="margin-bottom:1rem">
-              <label class="form-label">Email Address</label>
-              <input type="email" class="form-input" id="login-email" placeholder="monu@example.com" required>
+    <div class="auth-wrap">
+      <div class="auth-bg"></div>
+      <div class="auth-container">
+        <div class="auth-visual">
+          <img
+            src="https://picsum.photos/seed/auth-art/600/800"
+            alt="ArtCraft"
+          />
+          <div class="auth-visual-content">
+            <div
+              style="
+                font-family: var(--font-display);
+                font-size: 2rem;
+                color: var(--cream);
+                line-height: 1.2;
+                margin-bottom: 0.75rem;
+              "
+            >
+              Art That<br />Moves <em style="color: var(--gold)">You</em>
             </div>
-            <div class="form-group" style="margin-bottom:0.5rem">
-              <label class="form-label">Password</label>
-              <div class="input-wrap">
-                <input type="password" class="form-input" id="login-pw" placeholder="Enter your password" required>
-                <span class="input-icon" onclick="togglePw('login-pw')"><i class="fas fa-eye"></i></span>
+            <p
+              style="
+                font-size: 0.85rem;
+                color: rgba(240, 234, 214, 0.7);
+                line-height: 1.8;
+              "
+            >
+              Join our community of art lovers. Track your orders, save
+              favourites, and get exclusive early access to new artworks.
+            </p>
+          </div>
+        </div>
+
+        <div class="auth-form-panel">
+          <div style="margin-bottom: 1.5rem">
+            <a
+              href="index.html"
+              style="
+                display: inline-block;
+                font-family: var(--font-display);
+                font-size: 1.4rem;
+                color: var(--gold);
+              "
+              >ArtCraft</a
+            >
+            <p
+              style="
+                font-size: 0.82rem;
+                color: var(--text3);
+                margin-top: 0.2rem;
+              "
+            >
+              Premium Handmade Art
+            </p>
+          </div>
+
+          <div class="auth-tabs">
+            <div class="auth-tab active" onclick="showTab('login')">Login</div>
+            <div class="auth-tab" onclick="showTab('signup')">
+              Create Account
+            </div>
+          </div>
+
+          <!-- Login Form -->
+          <div id="login-form">
+            <div class="divider"><span>sign in with email</span></div>
+            <form onsubmit="handleLogin(event)">
+              <div class="form-group" style="margin-bottom: 1rem">
+                <label class="form-label">Email Address</label>
+                <input
+                  type="email"
+                  class="form-input"
+                  id="login-email"
+                  placeholder="monu@example.com"
+                  required
+                />
               </div>
-            </div>
-            <div style="text-align:right;margin-bottom:1.25rem"><a href="#" style="font-size:0.78rem;color:var(--gold)">Forgot password?</a></div>
-            <button type="submit" class="btn btn-gold" style="width:100%;justify-content:center;padding:0.85rem">Login to Account</button>
-          </form>
-          <p style="text-align:center;font-size:0.82rem;color:var(--text2);margin-top:1.25rem">Don't have an account? <a onclick="showTab('signup')" style="color:var(--gold);cursor:pointer">Sign up</a></p>
-        </div>
-
-        <!-- Signup Form -->
-        <div id="signup-form" style="display:none">
-          <div class="divider"><span>sign up with email</span></div>
-          <form onsubmit="handleSignup(event)">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
-              <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" id="signup-fname" placeholder="Monu" required></div>
-              <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" id="signup-lname" placeholder="Sharma" required></div>
-            </div>
-            <div class="form-group" style="margin-bottom:1rem">
-              <label class="form-label">Email Address</label>
-              <input type="email" class="form-input" id="signup-email" placeholder="monu@example.com" required>
-            </div>
-            <div class="form-group" style="margin-bottom:1rem">
-              <label class="form-label">Phone Number</label>
-              <input type="tel" class="form-input" placeholder="+91 98765 43210">
-            </div>
-            <div class="form-group" style="margin-bottom:0.75rem">
-              <label class="form-label">Password</label>
-              <div class="input-wrap">
-                <input type="password" class="form-input" id="signup-pw" placeholder="Min. 8 characters" required>
-                <span class="input-icon" onclick="togglePw('signup-pw')"><i class="fas fa-eye"></i></span>
+              <div class="form-group" style="margin-bottom: 0.5rem">
+                <label class="form-label">Password</label>
+                <div class="input-wrap">
+                  <input
+                    type="password"
+                    class="form-input"
+                    id="login-pw"
+                    placeholder="Enter your password"
+                    required
+                  />
+                  <span class="input-icon" onclick="togglePw('login-pw')"
+                    ><i class="fas fa-eye"></i
+                  ></span>
+                </div>
               </div>
-            </div>
-            <label style="display:flex;align-items:flex-start;gap:0.75rem;font-size:0.78rem;color:var(--text2);cursor:pointer;margin-bottom:1.25rem">
-              <input type="checkbox" style="accent-color:var(--gold);margin-top:2px" required>
-              I agree to the <a href="#" style="color:var(--gold)">Terms of Service</a> and <a href="#" style="color:var(--gold)">Privacy Policy</a>
-            </label>
-            <button type="submit" class="btn btn-gold" style="width:100%;justify-content:center;padding:0.85rem">Create My Account</button>
-          </form>
-          <p style="text-align:center;font-size:0.82rem;color:var(--text2);margin-top:1.25rem">Already have an account? <a onclick="showTab('login')" style="color:var(--gold);cursor:pointer">Login</a></p>
+              <div style="text-align: right; margin-bottom: 1.25rem">
+                <a href="#" style="font-size: 0.78rem; color: var(--gold)"
+                  >Forgot password?</a
+                >
+              </div>
+              <button
+                type="submit"
+                class="btn btn-gold"
+                style="width: 100%; justify-content: center; padding: 0.85rem"
+              >
+                Login to Account
+              </button>
+            </form>
+            <p
+              style="
+                text-align: center;
+                font-size: 0.82rem;
+                color: var(--text2);
+                margin-top: 1.25rem;
+              "
+            >
+              Don't have an account?
+              <a
+                onclick="showTab('signup')"
+                style="color: var(--gold); cursor: pointer"
+                >Sign up</a
+              >
+            </p>
+          </div>
+
+          <!-- Signup Form -->
+          <div id="signup-form" style="display: none">
+            <div class="divider"><span>sign up with email</span></div>
+            <form onsubmit="handleSignup(event)">
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: 1fr 1fr;
+                  gap: 1rem;
+                  margin-bottom: 1rem;
+                "
+              >
+                <div class="form-group">
+                  <label class="form-label">First Name</label
+                  ><input
+                    type="text"
+                    class="form-input"
+                    id="signup-fname"
+                    placeholder="Monu"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Name</label
+                  ><input
+                    type="text"
+                    class="form-input"
+                    id="signup-lname"
+                    placeholder="Sharma"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group" style="margin-bottom: 1rem">
+                <label class="form-label">Email Address</label>
+                <input
+                  type="email"
+                  class="form-input"
+                  id="signup-email"
+                  placeholder="monu@example.com"
+                  required
+                />
+              </div>
+              <div class="form-group" style="margin-bottom: 1rem">
+                <label class="form-label">Phone Number</label>
+                <input
+                  type="tel"
+                  class="form-input"
+                  placeholder="+91 98765 43210"
+                />
+              </div>
+              <div class="form-group" style="margin-bottom: 0.75rem">
+                <label class="form-label">Password</label>
+                <div class="input-wrap">
+                  <input
+                    type="password"
+                    class="form-input"
+                    id="signup-pw"
+                    placeholder="Min. 8 characters"
+                    required
+                  />
+                  <span class="input-icon" onclick="togglePw('signup-pw')"
+                    ><i class="fas fa-eye"></i
+                  ></span>
+                </div>
+              </div>
+              <label
+                style="
+                  display: flex;
+                  align-items: flex-start;
+                  gap: 0.75rem;
+                  font-size: 0.78rem;
+                  color: var(--text2);
+                  cursor: pointer;
+                  margin-bottom: 1.25rem;
+                "
+              >
+                <input
+                  type="checkbox"
+                  style="accent-color: var(--gold); margin-top: 2px"
+                  required
+                />
+                I agree to the
+                <a href="#" style="color: var(--gold)">Terms of Service</a> and
+                <a href="#" style="color: var(--gold)">Privacy Policy</a>
+              </label>
+              <button
+                type="submit"
+                class="btn btn-gold"
+                style="width: 100%; justify-content: center; padding: 0.85rem"
+              >
+                Create My Account
+              </button>
+            </form>
+            <p
+              style="
+                text-align: center;
+                font-size: 0.82rem;
+                color: var(--text2);
+                margin-top: 1.25rem;
+              "
+            >
+              Already have an account?
+              <a
+                onclick="showTab('login')"
+                style="color: var(--gold); cursor: pointer"
+                >Login</a
+              >
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div id="toast-container"></div>
-  <script src="script.js"></script>
-  <script>
-    // Admin credentials
-    const ADMIN_EMAIL_AUTH = 'marco.muna143@gmail.com';
-    const ADMIN_PASS_AUTH  = 'Marco@143';
+    <div id="toast-container"></div>
+    <script src="script.js"></script>
+    <script>
+      // Admin credentials
+      const ADMIN_EMAIL_AUTH = "marco.muna143@gmail.com";
+      const ADMIN_PASS_AUTH = "Marco@143";
 
-    // If already logged in, redirect
-    if (getUser()) window.location.href = getUser().isAdmin ? 'admin.html' : 'index.html';
+      // If already logged in, redirect
+      if (getUser())
+        window.location.href = getUser().isAdmin ? "admin.html" : "index.html";
 
-    function showTab(tab) {
-      document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0 && tab==='login') || (i===1 && tab==='signup')));
-      document.getElementById('login-form').style.display  = tab === 'login'  ? 'block' : 'none';
-      document.getElementById('signup-form').style.display = tab === 'signup' ? 'block' : 'none';
-    }
-    function togglePw(id) {
-      const inp = document.getElementById(id);
-      inp.type = inp.type === 'password' ? 'text' : 'password';
-    }
-
-    function handleLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('login-email').value.trim();
-      const pass  = document.getElementById('login-pw').value;
-
-      if (email === ADMIN_EMAIL_AUTH && pass === ADMIN_PASS_AUTH) {
-        saveUser({ name: 'Admin', email: ADMIN_EMAIL_AUTH, isAdmin: true });
-        showToast('<i class="fas fa-crown"></i> Welcome, Admin!', 'success');
-        setTimeout(() => window.location.href = 'admin.html', 1000);
-        return;
+      function showTab(tab) {
+        document
+          .querySelectorAll(".auth-tab")
+          .forEach((t, i) =>
+            t.classList.toggle(
+              "active",
+              (i === 0 && tab === "login") || (i === 1 && tab === "signup"),
+            ),
+          );
+        document.getElementById("login-form").style.display =
+          tab === "login" ? "block" : "none";
+        document.getElementById("signup-form").style.display =
+          tab === "signup" ? "block" : "none";
+      }
+      function togglePw(id) {
+        const inp = document.getElementById(id);
+        inp.type = inp.type === "password" ? "text" : "password";
       }
 
-      // Regular user
-      const name = email.split('@')[0].replace(/[^a-zA-Z]/g,' ').trim() || 'Customer';
-      saveUser({ name: name.charAt(0).toUpperCase() + name.slice(1), email, isAdmin: false });
-      showToast('<i class="fas fa-check-circle"></i> Welcome back!', 'success');
-      setTimeout(() => window.location.href = 'index.html', 1000);
-    }
+      function handleLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById("login-email").value.trim();
+        const pass = document.getElementById("login-pw").value;
 
-    function handleSignup(e) {
-      e.preventDefault();
-      const fname = document.getElementById('signup-fname').value.trim();
-      const lname = document.getElementById('signup-lname').value.trim();
-      const email = document.getElementById('signup-email').value.trim();
-      saveUser({ name: fname + (lname ? ' ' + lname : ''), email, isAdmin: false });
-      showToast('<i class="fas fa-check-circle"></i> Account created! Welcome to ArtCraft.', 'success');
-      setTimeout(() => window.location.href = 'index.html', 1000);
-    }
-  </script>
-</body>
+        if (email === ADMIN_EMAIL_AUTH && pass === ADMIN_PASS_AUTH) {
+          saveUser({ name: "Admin", email: ADMIN_EMAIL_AUTH, isAdmin: true });
+          showToast('<i class="fas fa-crown"></i> Welcome, Admin!', "success");
+          setTimeout(() => (window.location.href = "admin.html"), 1000);
+          return;
+        }
+
+        // Regular user
+        const name =
+          email
+            .split("@")[0]
+            .replace(/[^a-zA-Z]/g, " ")
+            .trim() || "Customer";
+        saveUser({
+          name: name.charAt(0).toUpperCase() + name.slice(1),
+          email,
+          isAdmin: false,
+        });
+        showToast(
+          '<i class="fas fa-check-circle"></i> Welcome back!',
+          "success",
+        );
+        setTimeout(() => (window.location.href = "index.html"), 1000);
+      }
+
+      function handleSignup(e) {
+        e.preventDefault();
+        const fname = document.getElementById("signup-fname").value.trim();
+        const lname = document.getElementById("signup-lname").value.trim();
+        const email = document.getElementById("signup-email").value.trim();
+        saveUser({
+          name: fname + (lname ? " " + lname : ""),
+          email,
+          isAdmin: false,
+        });
+        showToast(
+          '<i class="fas fa-check-circle"></i> Account created! Welcome to ArtCraft.',
+          "success",
+        );
+        setTimeout(() => (window.location.href = "index.html"), 1000);
+      }
+    </script>
+  </body>
 </html>
