@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — ArtCraft Studio</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 5%;
+    }
+
+    .checkout-section {
+      margin-bottom: 2rem;
+    }
+
+    .checkout-heading {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      color: var(--cream);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .checkout-heading .step-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--bg);
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .form-grid .full {
+      grid-column: 1/-1;
+    }
+
+    .payment-option {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--border2);
+      border-radius: var(--radius2);
+      cursor: pointer;
+      transition: border-color 0.2s;
+      margin-bottom: 0.75rem;
+    }
+
+    .payment-option:hover {
+      border-color: var(--border);
+    }
+
+    .payment-option input[type="radio"] {
+      accent-color: var(--gold);
+      width: 18px;
+      height: 18px;
+    }
+
+    .payment-option label {
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .payment-option p {
+      font-size: 0.88rem;
+      color: var(--cream);
+      font-weight: 500;
+    }
+
+    .payment-option span {
+      font-size: 0.75rem;
+      color: var(--text3);
+    }
+
+    .order-summary-panel {
+      position: sticky;
+      top: calc(var(--nav-h) + 1.5rem);
+      height: max-content;
+    }
+
+    @media(max-width:900px) {
+      .checkout-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .order-summary-panel {
+        position: static;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loading-screen">
+    <div class="loading-logo">ArtCraft</div>
+    <div class="loading-bar">
+      <div class="loading-bar-inner"></div>
+    </div>
+  </div>
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+
+  <nav class="navbar scrolled">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">ArtCraft <span>Studio</span></a>
+      <div style="display:flex;align-items:center;gap:1.5rem;font-size:0.82rem;color:var(--text3)">
+        <span style="color:var(--gold)">Cart</span>
+        <i class="fas fa-chevron-right" style="font-size:0.6rem"></i>
+        <span style="color:var(--cream);font-weight:500">Checkout</span>
+        <i class="fas fa-chevron-right" style="font-size:0.6rem"></i>
+        <span>Confirmation</span>
+      </div>
+      <a href="cart.html" class="btn btn-ghost btn-sm"><i class="fas fa-arrow-left"></i> Back to Cart</a>
+    </div>
+  </nav>
+
+  <div style="padding-top:var(--nav-h)"></div>
+
+  <div class="checkout-layout">
+    <form id="checkout-form">
+      <!-- Contact Info -->
+      <div class="checkout-section">
+        <h3 class="checkout-heading"><span class="step-badge">1</span>Contact Information</h3>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">First Name *</label><input class="form-input" type="text"
+              placeholder="Rahul" required></div>
+          <div class="form-group"><label class="form-label">Last Name *</label><input class="form-input" type="text"
+              placeholder="Sharma" required></div>
+          <div class="form-group full"><label class="form-label">Email Address *</label><input class="form-input"
+              type="email" placeholder="rahul@example.com" required></div>
+          <div class="form-group full"><label class="form-label">Phone Number *</label><input class="form-input"
+              type="tel" placeholder="+91 98765 43210" required></div>
+        </div>
+      </div>
+
+      <!-- Shipping -->
+      <div class="checkout-section">
+        <h3 class="checkout-heading"><span class="step-badge">2</span>Shipping Address</h3>
+        <div class="form-grid">
+          <div class="form-group full"><label class="form-label">Address Line 1 *</label><input class="form-input"
+              type="text" placeholder="House no., Street name" required></div>
+          <div class="form-group full"><label class="form-label">Address Line 2</label><input class="form-input"
+              type="text" placeholder="Apartment, area (optional)"></div>
+          <div class="form-group"><label class="form-label">City *</label><input class="form-input" type="text"
+              placeholder="Jaipur" required></div>
+          <div class="form-group"><label class="form-label">State *</label><select class="form-select" required>
+              <option value="">Select State</option>
+              <option>Rajasthan</option>
+              <option>Delhi</option>
+              <option>Maharashtra</option>
+              <option>Karnataka</option>
+              <option>Tamil Nadu</option>
+              <option>Uttar Pradesh</option>
+              <option>Gujarat</option>
+              <option>West Bengal</option>
+              <option>Other</option>
+            </select></div>
+          <div class="form-group"><label class="form-label">Pincode *</label><input class="form-input" type="text"
+              placeholder="302001" maxlength="6" required></div>
+          <div class="form-group"><label class="form-label">Country</label><input class="form-input" value="India"
+              readonly style="opacity:0.6"></div>
+        </div>
+        <label
+          style="display:flex;align-items:center;gap:0.75rem;margin-top:1rem;cursor:pointer;font-size:0.85rem;color:var(--text2)">
+          <input type="checkbox" style="accent-color:var(--gold)">
+          This is a gift — include handwritten message card
+        </label>
+      </div>
+
+      <!-- Payment -->
+      <div class="checkout-section">
+        <h3 class="checkout-heading"><span class="step-badge">3</span>Payment Method</h3>
+        <div class="payment-option">
+          <input type="radio" name="payment" id="upi" value="upi" checked>
+          <label for="upi">
+            <p>UPI / QR Code</p><span>Instant, secure payment via any UPI app</span>
+          </label>
+          <i class="fas fa-mobile-alt" style="color:var(--gold);font-size:1.2rem"></i>
+        </div>
+        <div class="payment-option">
+          <input type="radio" name="payment" id="card" value="card">
+          <label for="card">
+            <p>Credit / Debit Card</p><span>Visa, Mastercard, RuPay accepted</span>
+          </label>
+          <i class="far fa-credit-card" style="color:var(--gold);font-size:1.2rem"></i>
+        </div>
+        <div class="payment-option">
+          <input type="radio" name="payment" id="netbanking" value="net">
+          <label for="netbanking">
+            <p>Net Banking</p><span>All major Indian banks supported</span>
+          </label>
+          <i class="fas fa-university" style="color:var(--gold);font-size:1.2rem"></i>
+        </div>
+        <div class="payment-option">
+          <input type="radio" name="payment" id="cod" value="cod">
+          <label for="cod">
+            <p>Cash on Delivery</p><span>Available for select pincodes</span>
+          </label>
+          <i class="fas fa-money-bill-wave" style="color:var(--gold);font-size:1.2rem"></i>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-gold btn-lg" style="width:100%;justify-content:center">
+        <i class="fas fa-lock"></i> Place Order Securely
+      </button>
+      <p style="text-align:center;color:var(--text3);font-size:0.75rem;margin-top:0.75rem">
+        <i class="fas fa-shield-alt"></i> 256-bit SSL encryption · Your data is safe
+      </p>
+    </form>
+
+    <!-- Order Summary -->
+    <div class="order-summary-panel">
+      <div class="glow-card" style="padding:1.75rem">
+        <h3 style="font-family:var(--font-serif);color:var(--cream);font-size:1.15rem;margin-bottom:1.25rem">Order
+          Summary</h3>
+        <div id="order-summary-items" style="margin-bottom:1rem">
+          <div style="text-align:center;padding:2rem 0;color:var(--text3)"><i class="fas fa-spinner fa-spin"></i></div>
+        </div>
+        <div style="padding:1rem 0;border-top:1px solid var(--border2)">
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem">
+            <input type="text" id="checkout-coupon" placeholder="Coupon code"
+              style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:0.55rem 0.85rem;color:var(--text);font-size:0.82rem;outline:none">
+            <button onclick="applyCheckoutCoupon()" class="btn btn-ghost btn-sm">Apply</button>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0.5rem">
+          <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:var(--text2)">
+            <span>Subtotal</span><span id="co-subtotal">₹0</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:var(--text2)">
+            <span>Shipping</span><span id="co-shipping">₹0</span></div>
+          <div
+            style="display:flex;justify-content:space-between;font-weight:600;color:var(--gold);font-size:1rem;padding-top:0.5rem;border-top:1px solid var(--border2);margin-top:0.25rem">
+            <span>Total</span><span id="co-total">₹0</span></div>
+        </div>
+      </div>
+
+      <div class="glow-card" style="padding:1.25rem;margin-top:1rem">
+        <div style="display:flex;flex-direction:column;gap:0.5rem">
+          <p style="font-size:0.82rem;color:var(--text2);display:flex;align-items:center;gap:0.5rem"><i
+              class="fas fa-undo" style="color:var(--gold)"></i> Free revision guarantee</p>
+          <p style="font-size:0.82rem;color:var(--text2);display:flex;align-items:center;gap:0.5rem"><i
+              class="fas fa-shield-alt" style="color:var(--gold)"></i> Secure packaging</p>
+          <p style="font-size:0.82rem;color:var(--text2);display:flex;align-items:center;gap:0.5rem"><i
+              class="fas fa-truck" style="color:var(--gold)"></i> Delivered in 7–10 days</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // Populate checkout summary
+    (function () {
+      const cart = getCart();
+      const sub = cart.reduce((s, i) => s + i.price * i.qty, 0);
+      const ship = sub >= 2000 ? 0 : 149;
+      document.getElementById('co-subtotal').textContent = '₹' + sub.toLocaleString();
+      document.getElementById('co-shipping').textContent = ship === 0 ? 'FREE' : '₹149';
+      document.getElementById('co-total').textContent = '₹' + (sub + ship).toLocaleString();
+      const el = document.getElementById('order-summary-items');
+      if (!cart.length) { el.innerHTML = '<p style="color:var(--text3);font-size:0.85rem">Cart is empty</p>'; return; }
+      el.innerHTML = cart.map(i => `
+        <div style="display:flex;gap:0.75rem;margin-bottom:0.75rem;align-items:center">
+          <img src="${i.image}" style="width:48px;height:58px;object-fit:cover;border-radius:6px;border:1px solid var(--border2)" alt="">
+          <div style="flex:1"><p style="font-size:0.82rem;color:var(--cream)">${i.name}</p><p style="font-size:0.72rem;color:var(--text3)">Qty: ${i.qty} ${i.size ? '· ' + i.size : ''}</p></div>
+          <span style="color:var(--gold);font-weight:600;font-size:0.88rem">₹${(i.price * i.qty).toLocaleString()}</span>
+        </div>`).join('');
+    })();
+
+    function applyCheckoutCoupon() {
+      const code = document.getElementById('checkout-coupon').value.trim().toUpperCase();
+      if (code === 'ART10') showToast('<i class="fas fa-tag"></i> 10% discount applied!', 'success');
+      else showToast('Invalid coupon code.', 'error');
+    }
+  </script>
+</body>
+
+</html>

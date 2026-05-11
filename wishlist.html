@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist — ArtCraft Studio</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+  <div id="loading-screen">
+    <div class="loading-logo">ArtCraft</div>
+    <div class="loading-bar">
+      <div class="loading-bar-inner"></div>
+    </div>
+  </div>
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+  <div id="scroll-bar"></div>
+
+  <nav class="navbar scrolled">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">ArtCraft <span>Studio</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="custom-order.html">Custom Order</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="wishlist.html" class="nav-icon-btn"><i class="fas fa-heart"></i><span
+            class="cart-count wish-count"></span></a>
+        <a href="cart.html" class="nav-icon-btn"><i class="fas fa-shopping-bag"></i><span class="cart-count"></span></a>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </nav>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="index.html">Home</a><a href="shop.html">Shop</a><a href="custom-order.html">Custom Order</a>
+    <a href="about.html">About</a><a href="contact.html">Contact</a><a href="cart.html">Cart</a>
+  </div>
+
+  <div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Wishlist</span></div>
+    <h1 class="section-title">Your <em>Wishlist</em></h1>
+    <p style="color:var(--text2);font-size:0.9rem;margin-top:0.5rem">Artworks you've saved for later</p>
+  </div>
+
+  <div class="section" style="padding-top:3rem;padding-bottom:5rem">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem">
+      <p style="color:var(--text2);font-size:0.85rem" id="wish-count-text">Loading...</p>
+      <div style="display:flex;gap:0.75rem">
+        <button onclick="addAllToCart()" class="btn btn-gold btn-sm"><i class="fas fa-shopping-bag"></i> Add All to
+          Cart</button>
+        <button onclick="clearWishlist()" class="btn btn-ghost btn-sm"><i class="fas fa-trash-alt"></i> Clear
+          Wishlist</button>
+      </div>
+    </div>
+    <div class="products-grid" id="wish-items"></div>
+  </div>
+
+  <!-- Recommended -->
+  <div class="section-bg" style="padding:4rem 5%">
+    <div style="max-width:1400px;margin:0 auto">
+      <h2 class="section-title" style="font-size:1.8rem;margin-bottom:2rem">You Might Also <em>Love</em></h2>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-img-wrap"><img src="https://picsum.photos/seed/rec1/400/530" alt="" loading="lazy"></div>
+          <div class="product-info">
+            <p class="product-cat">Pencil Portraits</p>
+            <h3 class="product-name">Couple Portrait</h3>
+            <p class="product-price">₹1,499</p>
+          </div>
+          <div class="product-card-footer"><button class="add-cart-btn"
+              onclick='addToCart({id:"rec1",name:"Couple Portrait",price:1499,image:"https://picsum.photos/seed/rec1/400/530",category:"Pencil Portraits",size:"A4",frame:"None"})'><i
+                class="fas fa-shopping-bag"></i> Add to Cart</button></div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap"><img src="https://picsum.photos/seed/rec2/400/530" alt="" loading="lazy"></div>
+          <div class="product-info">
+            <p class="product-cat">Mandala Art</p>
+            <h3 class="product-name">Mandala Triptych</h3>
+            <p class="product-price">₹2,499</p>
+          </div>
+          <div class="product-card-footer"><button class="add-cart-btn"
+              onclick='addToCart({id:"rec2",name:"Mandala Triptych",price:2499,image:"https://picsum.photos/seed/rec2/400/530",category:"Mandala Art",size:"Large",frame:"None"})'><i
+                class="fas fa-shopping-bag"></i> Add to Cart</button></div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap"><img src="https://picsum.photos/seed/rec3/400/530" alt="" loading="lazy"></div>
+          <div class="product-info">
+            <p class="product-cat">Lippan Art</p>
+            <h3 class="product-name">Lippan Panel</h3>
+            <p class="product-price">₹2,199</p>
+          </div>
+          <div class="product-card-footer"><button class="add-cart-btn"
+              onclick='addToCart({id:"rec3",name:"Lippan Panel",price:2199,image:"https://picsum.photos/seed/rec3/400/530",category:"Lippan Art",size:"Large",frame:"None"})'><i
+                class="fas fa-shopping-bag"></i> Add to Cart</button></div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap"><img src="https://picsum.photos/seed/rec4/400/530" alt="" loading="lazy"></div>
+          <div class="product-info">
+            <p class="product-cat">Pencil Portraits</p>
+            <h3 class="product-name">Family Portrait A3</h3>
+            <p class="product-price">₹1,899</p>
+          </div>
+          <div class="product-card-footer"><button class="add-cart-btn"
+              onclick='addToCart({id:"rec4",name:"Family Portrait A3",price:1899,image:"https://picsum.photos/seed/rec4/400/530",category:"Pencil Portraits",size:"A3",frame:"None"})'><i
+                class="fas fa-shopping-bag"></i> Add to Cart</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div><a href="index.html" class="footer-logo">ArtCraft</a>
+        <p class="footer-desc">Handcrafted art for every occasion.</p>
+        <div class="footer-social"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i
+              class="fab fa-facebook-f"></i></a><a href="https://wa.me/919999999999"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-heading">Quick Links</p>
+        <div class="footer-links"><a href="index.html">Home</a><a href="shop.html">Shop</a><a
+            href="custom-order.html">Custom Order</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-heading">Categories</p>
+        <div class="footer-links"><a href="shop.html?cat=pencil">Pencil Portraits</a><a
+            href="shop.html?cat=mandala">Mandala Art</a><a href="shop.html?cat=lippan">Lippan Art</a></div>
+      </div>
+      <div>
+        <p class="footer-heading">Contact</p>
+        <div class="footer-links"><a href="mailto:hello@artcraftstudio.com"><i class="fas fa-envelope"
+              style="color:var(--gold);margin-right:0.4rem"></i>hello@artcraftstudio.com</a><a
+            href="https://wa.me/919999999999"><i class="fab fa-whatsapp"
+              style="color:var(--gold);margin-right:0.4rem"></i>WhatsApp</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 ArtCraft Studio.</p>
+      <div class="footer-bottom-links"><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+  </footer>
+
+  <div id="toast-container"></div>
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
+  <script src="script.js"></script>
+  <script>
+    function updateWishCountText() {
+      const wish = getWish();
+      document.getElementById('wish-count-text').textContent = wish.length > 0 ? `${wish.length} item${wish.length > 1 ? 's' : ''} saved` : 'No items saved yet';
+    }
+    function addAllToCart() {
+      const wish = getWish();
+      if (!wish.length) { showToast('Wishlist is empty!', 'error'); return; }
+      wish.forEach(item => addToCart({ ...item, qty: 1, size: 'A4', frame: 'None' }));
+      showToast(`<i class="fas fa-check-circle"></i> ${wish.length} item${wish.length > 1 ? 's' : ''} added to cart!`, 'success');
+    }
+    function clearWishlist() {
+      if (!getWish().length) return;
+      saveWish([]);
+      renderWishlist();
+      updateWishCountText();
+      showToast('Wishlist cleared.', 'info');
+    }
+    // Extend renderWishlist to update count
+    const _orig = window.renderWishlist;
+    document.addEventListener('DOMContentLoaded', () => {
+      renderWishlist();
+      updateWishCountText();
+    });
+  </script>
+</body>
+
+</html>

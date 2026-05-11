@@ -1,0 +1,43 @@
+{
+  "name": "ArtCraft Studio",
+  "short_name": "ArtCraft",
+  "description": "Custom pencil portraits, mandala art, and lippan art handcrafted with love.",
+  "start_url": "/artcraft/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192x192/0a0a0a/c9a96e?text=AC",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://via.placeholder.com/512x512/0a0a0a/c9a96e?text=AC",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "lifestyle"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Shop",
+      "url": "/artcraft/shop.html",
+      "description": "Browse our art collection"
+    },
+    {
+      "name": "Custom Order",
+      "url": "/artcraft/custom-order.html",
+      "description": "Place a custom art order"
+    },
+    {
+      "name": "Cart",
+      "url": "/artcraft/cart.html",
+      "description": "View your cart"
+    }
+  ]
+}
